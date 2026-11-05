@@ -1,0 +1,67 @@
+/* ===== Tokens de tema ===== */
+:root,
+[data-theme="light"] {
+  --fundo: #fbfaf7;
+  --superficie: #ffffff;
+  --texto: #1f1d1a;
+  --suave: #6b6458;
+  --borda: #e6e1d6;
+  --cor-liturgica: #2f6b3a; /* sobrescrita pelo app conforme a cor do dia */
+  color-scheme: light;
+}
+
+[data-theme="sepia"] {
+  --fundo: #f4ecd8;
+  --superficie: #f9f3e3;
+  --texto: #3b2f1e;
+  --suave: #6f5f45;
+  --borda: #e0d3b4;
+  color-scheme: light;
+}
+
+[data-theme="dark"] {
+  --fundo: #15140f;
+  --superficie: #1e1c17;
+  --texto: #e9e4d8;
+  --suave: #a39b8a;
+  --borda: #34312a;
+  color-scheme: dark;
+}
+
+/* ===== Tipografia de leitura ===== */
+:root {
+  --escala-fonte: 1; /* ajustada por A- / A+ */
+}
+
+body {
+  background: var(--fundo);
+  color: var(--texto);
+}
+
+.leitura {
+  font-size: calc(1.0625rem * var(--escala-fonte));
+  line-height: 1.85;
+}
+
+.leitura sup {
+  font-size: 0.65em;
+  color: var(--suave);
+  margin-right: 0.15em;
+}
+
+/* ===== Skeleton ===== */
+.skeleton {
+  background: linear-gradient(90deg, var(--borda) 25%, var(--superficie) 50%, var(--borda) 75%);
+  background-size: 200% 100%;
+  animation: skeleton 1.4s ease-in-out infinite;
+  border-radius: 0.25rem;
+}
+
+@keyframes skeleton {
+  from { background-position: 200% 0; }
+  to { background-position: -200% 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skeleton { animation: none; }
+}

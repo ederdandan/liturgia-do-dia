@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="pt-BR" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Liturgia do Dia</title>
+  <meta name="description" content="Liturgia diária, santo do dia, reflexão e Catena Aurea.">
+
+  <!-- Aplica tema salvo antes da renderização para evitar flash -->
+  <script>
+    try {
+      var t = localStorage.getItem('pref:tema');
+      if (t) document.documentElement.dataset.theme = t;
+    } catch (e) {}
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Merriweather:ital,wght@0,300;0,400;0,700;1,400&display=swap" rel="stylesheet">
+
+  <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            serif: ['Merriweather', 'Georgia', 'serif'],
+            display: ['Cinzel', 'Georgia', 'serif'],
+          },
+          colors: {
+            fundo: 'var(--fundo)',
+            superficie: 'var(--superficie)',
+            texto: 'var(--texto)',
+            suave: 'var(--suave)',
+            borda: 'var(--borda)',
+            liturgica: 'var(--cor-liturgica)',
+          },
+        },
+      },
+    };
+  </script>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="bg-fundo text-texto font-serif antialiased">
+  <a href="#conteudo" class="sr-only focus:not-sr-only">Pular para o conteúdo</a>
+
+  <header id="cabecalho" class="border-b border-borda">
+    <div class="mx-auto max-w-3xl px-4 py-4">
+      <p class="font-display text-sm tracking-widest text-suave">LITURGIA DO DIA</p>
+      <!-- Fase 2: data, título litúrgico, cor, navegação e controles de leitura -->
+    </div>
+  </header>
+
+  <nav id="abas" class="border-b border-borda" aria-label="Seções">
+    <!-- Fase 2: abas Liturgia / Santo / Reflexão / Catena Aurea -->
+  </nav>
+
+  <main id="conteudo" class="mx-auto max-w-3xl px-4 py-8 leitura">
+    <p class="text-suave">Carregando…</p>
+  </main>
+
+  <footer class="mx-auto max-w-3xl px-4 py-8 text-xs text-suave">
+    Uso pessoal e não comercial. Fontes: Liturgia Diária API, Evangelizo.org, Wikipedia, Commentaries-Database.
+  </footer>
+
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>

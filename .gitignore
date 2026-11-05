@@ -1,0 +1,12 @@
+# Base patrística bruta (~163 MB) usada só por tools/build_catena.py
+*.sqlite
+tools/.cache/
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+
+# Sistema
+.DS_Store
+Thumbs.db
