@@ -1,4 +1,5 @@
 // Aba "Patrística & Catena Aurea": comentários dos Padres sobre o Evangelho do dia.
+// Mostra o português (textoPt) quando já traduzido; senão, o original em inglês.
 
 import { escaparHtml } from '../utils/sanitize.js';
 
@@ -9,14 +10,23 @@ export function renderCatena(resultados) {
     return `<p class="italic text-suave">Não há comentários da Catena Aurea para o Evangelho deste dia.</p>`;
   }
 
+  const trechos = validos.flatMap((r) => r.grupos.flatMap((g) => g.trechos));
+  const traduzidos = trechos.filter((t) => t.textoPt).length;
+  const aviso = validos.every((r) => r.idioma === 'pt')
+    ? ''
+    : traduzidos === 0
+      ? 'Texto em inglês, na tradução de J. H. Newman (1841) (a versão em português está indisponível no momento).'
+      : 'Parte dos trechos está em português; os demais seguem no inglês de J. H. Newman (1841).';
+
   return `
     <p class="rotulo">Catena Aurea · São Tomás de Aquino</p>
     <p class="mt-3 text-sm text-suave">
-      Comentários dos Padres da Igreja reunidos por São Tomás sobre o Evangelho do dia.
-      Texto em inglês, na tradução de J. H. Newman (1841).
+      Comentários dos Padres da Igreja reunidos por São Tomás sobre o Evangelho do dia. ${aviso}
     </p>
     ${validos.map(blocoEvangelho).join('')}
-    <p class="credito">${escaparHtml(validos[0].fonte)}</p>`;
+    <p class="credito">${escaparHtml(validos[0].fonte)}${validos[0].link
+      ? ` <a href="${escaparHtml(validos[0].link)}" target="_blank" rel="noopener">Ler no site do projeto</a>.`
+      : ''}</p>`;
 }
 
 function blocoEvangelho(r) {
@@ -26,7 +36,7 @@ function blocoEvangelho(r) {
       ${r.grupos.map((g) => `
         <div class="mt-8">
           <p class="selo">${rotuloVersos(r.livro, g)}</p>
-          <div class="mt-4 space-y-6" lang="en">
+          <div class="mt-4 space-y-6">
             ${g.trechos.map(trecho).join('')}
           </div>
         </div>`).join('')}
@@ -39,11 +49,24 @@ function rotuloVersos(livro, g) {
 }
 
 function trecho(t) {
+  const cabecalho = `
+    <figcaption class="text-sm">
+      <span class="font-bold">${escaparHtml(t.autor)}</span>${t.citacao ? ` <span class="text-suave italic">(${escaparHtml(t.citacao)})</span>` : ''}
+    </figcaption>`;
+
+  if (!t.textoPt) {
+    return `<figure>${cabecalho}<blockquote class="mt-1" lang="en">${escaparHtml(t.texto)}</blockquote></figure>`;
+  }
+  if (!t.texto) {
+    return `<figure>${cabecalho}<blockquote class="mt-1">${escaparHtml(t.textoPt)}</blockquote></figure>`;
+  }
   return `
     <figure>
-      <figcaption class="text-sm" lang="pt-BR">
-        <span class="font-bold">${escaparHtml(t.autor)}</span>${t.citacao ? ` <span class="text-suave italic">(${escaparHtml(t.citacao)})</span>` : ''}
-      </figcaption>
-      <blockquote class="mt-1">${escaparHtml(t.texto)}</blockquote>
+      ${cabecalho}
+      <blockquote class="mt-1">${escaparHtml(t.textoPt)}</blockquote>
+      <details class="mt-1 text-sm text-suave">
+        <summary class="cursor-pointer">original</summary>
+        <p class="mt-1" lang="en">${escaparHtml(t.texto)}</p>
+      </details>
     </figure>`;
 }

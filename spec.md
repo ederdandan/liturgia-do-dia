@@ -34,7 +34,7 @@ Desenvolver uma aplicação web estática, minimalista e responsiva para leitura
 | **Orações (coleta, oferendas, comunhão)** | Liturgia Diária API v2 (`oracoes`) | — | Ocultar seção |
 | **Santo do Dia** | Evangelizo `/saints` (nome, imagem, biografia, oração) | Wikipedia REST `page/summary` (resumo + imagem) | Texto de `liturgia` + `assets/default-saint.jpg` |
 | **Homilia & Reflexão** | Evangelizo `/commentary` (comentário diário de Padres, santos e papas) | Antífonas + orações do dia (Liturgia API) como meditação | Link externo para o comentário |
-| **Catena Aurea** | `data/catena/*.json` local | Comentário patrístico da Evangelizo (quando o autor é Padre da Igreja) | Mensagem "sem comentário para esta perícope" |
+| **Catena Aurea** | Português: projeto [catenaaurea.com.br](https://catenaaurea.com.br) (`raw.githubusercontent.com/guilherme-evangelista/catena-aurea/HEAD/data/{mateus,marcos,lucas,joao}.json`), lido em tempo de execução, sem cópia no repositório (o repositório não tem licença declarada; uso pessoal, com crédito e link) | Inglês local `data/catena/*/*.json` (Newman, domínio público) | Mensagem "sem comentário para esta perícope" |
 
 **Endpoints:**
 

@@ -5,7 +5,7 @@
 // - Imagens (santos): cache primeiro, até 80 imagens.
 // - APIs (liturgia, Evangelizo, Wikipedia): não interceptadas; o app já guarda as respostas no localStorage.
 
-const VERSAO = 'v1';
+const VERSAO = 'v2';
 const CACHE_APP = `app-${VERSAO}`;
 const CACHE_DADOS = `dados-${VERSAO}`;
 const CACHE_IMAGENS = `imagens-${VERSAO}`;
@@ -23,6 +23,7 @@ const ARQUIVOS_APP = [
   'js/adapters/liturgiaApi.js',
   'js/adapters/evangelizo.js',
   'js/adapters/wikipedia.js',
+  'js/adapters/catenaPt.js',
   'js/utils/books.js',
   'js/utils/cor.js',
   'js/utils/date.js',
@@ -58,6 +59,9 @@ self.addEventListener('fetch', (e) => {
   if (url.origin === location.origin) {
     if (url.pathname.includes('/data/catena/')) e.respondWith(cachePrimeiro(req, CACHE_DADOS));
     else e.respondWith(redePrimeiro(req));
+  } else if (url.hostname === 'raw.githubusercontent.com' && url.pathname.includes('/catena-aurea/')) {
+    // Catena em português (~1–2 MB por Evangelho): cache, atualizando em segundo plano
+    e.respondWith(atualizarEmSegundoPlano(req, CACHE_DADOS));
   } else if (CDNS.includes(url.hostname)) {
     e.respondWith(atualizarEmSegundoPlano(req));
   } else if (req.destination === 'image') {
@@ -93,8 +97,8 @@ async function cachePrimeiro(req, nomeCache, limite) {
   return resp;
 }
 
-async function atualizarEmSegundoPlano(req) {
-  const cache = await caches.open(CACHE_APP);
+async function atualizarEmSegundoPlano(req, nomeCache = CACHE_APP) {
+  const cache = await caches.open(nomeCache);
   const salvo = await cache.match(req);
   const rede = fetch(req)
     .then((resp) => { if (resp.ok || resp.type === 'opaque') cache.put(req, resp.clone()); return resp; })
