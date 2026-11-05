@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <!-- Ícone do app "Liturgia do Dia": cruz com auréola sobre a Palavra (livro aberto).
+       Fundo cobre todo o quadrado (compatível com ícone "maskable");
+       o desenho fica dentro da zona segura central (raio < 205px). -->
+  <defs>
+    <radialGradient id="fundo" cx="50%" cy="40%" r="75%">
+      <stop offset="0" stop-color="#3a2f1c"/>
+      <stop offset="0.55" stop-color="#211c13"/>
+      <stop offset="1" stop-color="#15140f"/>
+    </radialGradient>
+    <linearGradient id="ouro" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#f3dc9a"/>
+      <stop offset="0.5" stop-color="#d9b866"/>
+      <stop offset="1" stop-color="#a8822c"/>
+    </linearGradient>
+    <radialGradient id="brilho" cx="50%" cy="50%" r="50%">
+      <stop offset="0" stop-color="#f3dc9a" stop-opacity="0.35"/>
+      <stop offset="1" stop-color="#f3dc9a" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <rect width="512" height="512" fill="url(#fundo)"/>
+
+  <!-- Brilho suave atrás da cruz -->
+  <circle cx="256" cy="200" r="150" fill="url(#brilho)"/>
+
+  <!-- Raios -->
+  <g stroke="#d9b866" stroke-width="3" stroke-linecap="round" opacity="0.35">
+    <line x1="256" y1="200" x2="256" y2="72"/>
+    <line x1="256" y1="200" x2="166" y2="110"/>
+    <line x1="256" y1="200" x2="346" y2="110"/>
+    <line x1="256" y1="200" x2="128" y2="200"/>
+    <line x1="256" y1="200" x2="384" y2="200"/>
+    <line x1="256" y1="200" x2="200" y2="85"/>
+    <line x1="256" y1="200" x2="312" y2="85"/>
+    <line x1="256" y1="200" x2="141" y2="148"/>
+    <line x1="256" y1="200" x2="371" y2="148"/>
+  </g>
+
+  <!-- Auréola -->
+  <circle cx="256" cy="200" r="66" fill="none" stroke="url(#ouro)" stroke-width="9"/>
+
+  <!-- Cruz latina -->
+  <g fill="url(#ouro)">
+    <rect x="241" y="104" width="30" height="232" rx="5"/>
+    <rect x="190" y="168" width="132" height="30" rx="5"/>
+  </g>
+
+  <!-- Livro aberto (a Palavra) -->
+  <g fill="url(#ouro)">
+    <path d="M250 352 C220 330 182 324 140 330 L140 398 C182 392 220 398 250 420 Z"/>
+    <path d="M262 352 C292 330 330 324 372 330 L372 398 C330 392 292 398 262 420 Z"/>
+  </g>
+  <g fill="none" stroke="#15140f" stroke-width="3" stroke-linecap="round" opacity="0.45">
+    <path d="M162 350 C192 348 216 354 236 366"/>
+    <path d="M162 368 C192 366 216 372 236 384"/>
+    <path d="M350 350 C320 348 296 354 276 366"/>
+    <path d="M350 368 C320 366 296 372 276 384"/>
+  </g>
+</svg>

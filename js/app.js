@@ -4,6 +4,7 @@ import { getLiturgia, getSanto, getReflexao } from './apiService.js';
 import { iniciarControles, skeletonBloco, erroHtml, selecionarAba } from './uiService.js';
 import { listarSalvos, alternarSalvo, removerSalvo } from './salvosService.js';
 import { renderSalvos } from './views/salvos.js';
+import { iniciarInstalacao } from './installService.js';
 import { renderLiturgia } from './views/liturgia.js';
 import { renderSanto, IMAGEM_PADRAO } from './views/santo.js';
 import { renderReflexao } from './views/reflexao.js';
@@ -191,8 +192,16 @@ function registrarServiceWorker() {
   navigator.serviceWorker.register('sw.js').catch((e) => console.warn('Service worker não registrado', e));
 }
 
+// Atalhos do ícone instalado (manifest "shortcuts"): ?aba=santo, ?aba=salvos...
+function abrirAbaDaUrl() {
+  const aba = new URLSearchParams(location.search).get('aba');
+  if (aba) selecionarAba(aba);
+}
+
 iniciarControles();
 iniciarEventos();
 renderPainelSalvos();
+abrirAbaDaUrl();
 aoMudarHash();
 registrarServiceWorker();
+iniciarInstalacao();

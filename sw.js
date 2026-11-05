@@ -5,7 +5,7 @@
 // - Imagens (santos): cache primeiro, até 80 imagens.
 // - APIs (liturgia, Evangelizo, Wikipedia): não interceptadas; o app já guarda as respostas no localStorage.
 
-const VERSAO = 'v3';
+const VERSAO = 'v4';
 const CACHE_APP = `app-${VERSAO}`;
 const CACHE_DADOS = `dados-${VERSAO}`;
 const CACHE_IMAGENS = `imagens-${VERSAO}`;
@@ -33,7 +33,15 @@ const ARQUIVOS_APP = [
   'js/views/reflexao.js',
   'js/views/catena.js',
   'js/views/salvos.js',
+  'js/installService.js',
+  'manifest.webmanifest',
   'assets/default-saint.jpg',
+  'assets/icons/icon.svg',
+  'assets/icons/icon-192.png',
+  'assets/icons/icon-512.png',
+  'assets/icons/icon-maskable-512.png',
+  'assets/icons/apple-touch-icon.png',
+  'assets/icons/favicon-32.png',
 ];
 
 const CDNS = ['cdn.tailwindcss.com', 'fonts.googleapis.com', 'fonts.gstatic.com'];

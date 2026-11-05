@@ -6,6 +6,18 @@
   <title>Liturgia do Dia</title>
   <meta name="description" content="Liturgia diária, santo do dia, reflexão e Catena Aurea.">
 
+  <!-- PWA: instalável no celular -->
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="assets/icons/icon.svg" type="image/svg+xml">
+  <link rel="icon" href="assets/icons/favicon-32.png" sizes="32x32" type="image/png">
+  <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png">
+  <meta name="theme-color" content="#fbfaf7" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#15140f" media="(prefers-color-scheme: dark)">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Liturgia">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+
   <!-- Aplica tema e fonte salvos antes da renderização para evitar flash -->
   <script>
     try {
@@ -153,6 +165,19 @@
     <section role="tabpanel" id="painel-catena" aria-labelledby="aba-catena" tabindex="0" hidden></section>
     <section role="tabpanel" id="painel-salvos" aria-labelledby="aba-salvos" tabindex="0" hidden></section>
   </main>
+
+  <!-- Convite para instalar o app (aparece só quando o navegador permite) -->
+  <div id="aviso-instalar" class="ocultavel instalar" role="dialog" aria-labelledby="instalar-titulo" hidden>
+    <img src="assets/icons/icon-192.png" alt="" class="h-11 w-11 flex-none rounded-xl">
+    <div class="min-w-0 flex-1">
+      <p id="instalar-titulo" class="text-sm font-bold">Instalar Liturgia do Dia</p>
+      <p id="instalar-texto" class="text-xs text-suave">Acesso rápido pela tela inicial, também offline.</p>
+    </div>
+    <button id="btn-instalar" type="button" class="flex-none rounded-full bg-liturgica px-4 py-2 text-xs font-bold text-fundo">Instalar</button>
+    <button id="btn-instalar-fechar" type="button" class="btn-icone flex-none" aria-label="Agora não" title="Agora não">
+      <svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
+    </button>
+  </div>
 
   <!-- Saída do modo foco -->
   <button id="btn-sair-foco" type="button" class="btn-icone fixed bottom-4 right-4 hidden shadow" aria-label="Sair do modo foco" title="Sair do modo foco (Esc)">
