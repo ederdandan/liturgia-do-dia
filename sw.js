@@ -5,7 +5,7 @@
 // - Imagens (santos): cache primeiro, até 80 imagens.
 // - APIs (liturgia, Evangelizo, Wikipedia): não interceptadas; o app já guarda as respostas no localStorage.
 
-const VERSAO = 'v2';
+const VERSAO = 'v3';
 const CACHE_APP = `app-${VERSAO}`;
 const CACHE_DADOS = `dados-${VERSAO}`;
 const CACHE_IMAGENS = `imagens-${VERSAO}`;
@@ -73,7 +73,8 @@ self.addEventListener('fetch', (e) => {
 async function redePrimeiro(req) {
   const cache = await caches.open(CACHE_APP);
   try {
-    const resp = await fetch(req);
+    // no-cache: revalida com o servidor (304 se não mudou), evitando versões antigas do cache HTTP
+    const resp = await fetch(req, { cache: 'no-cache' });
     if (resp.ok) cache.put(req, resp.clone());
     return resp;
   } catch {

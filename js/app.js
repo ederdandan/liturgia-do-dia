@@ -9,7 +9,7 @@ import { renderSanto, IMAGEM_PADRAO } from './views/santo.js';
 import { renderReflexao } from './views/reflexao.js';
 import { getCatena } from './catenaService.js';
 import { renderCatena } from './views/catena.js';
-import { hojeISO, ehDataISO, somarDias, formatarExtenso } from './utils/date.js';
+import { hojeISO, ehDataISO, somarDias, formatarExtenso, formatarCurto } from './utils/date.js';
 
 const el = (id) => document.getElementById(id);
 const NOMES_COR = { verde: 'verde', branco: 'branco', vermelho: 'vermelho', roxo: 'roxo', rosa: 'rosa' };
@@ -46,6 +46,7 @@ async function carregar(data) {
 
   // Cabeçalho imediato
   el('data-extenso').textContent = formatarExtenso(data);
+  el('data-curta').textContent = formatarCurto(data);
   el('seletor-data').value = data;
   el('btn-hoje').classList.toggle('hidden', data === hojeISO());
   el('titulo-liturgico').innerHTML = '<span class="skeleton inline-block h-6 w-64 align-middle"></span>';

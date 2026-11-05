@@ -83,7 +83,11 @@ export function iniciarAbas() {
 
   abas.forEach((aba, i) => {
     aba.type = 'button';
-    aba.addEventListener('click', () => selecionar(aba));
+    aba.addEventListener('click', () => {
+      selecionar(aba);
+      // No celular (barra inferior), cada aba abre do início, como num app
+      if (matchMedia('(max-width: 767px)').matches) window.scrollTo({ top: 0 });
+    });
     aba.addEventListener('keydown', (e) => {
       const destino = {
         ArrowRight: abas[(i + 1) % abas.length],
@@ -111,9 +115,35 @@ export function iniciarControles() {
   document.getElementById('btn-foco').addEventListener('click', () => alternarFoco(true));
   document.getElementById('btn-sair-foco').addEventListener('click', () => alternarFoco(false));
   document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && document.body.classList.contains('modo-foco')) alternarFoco(false);
+    if (e.key !== 'Escape') return;
+    if (document.body.classList.contains('modo-foco')) alternarFoco(false);
+    fecharAjustes();
   });
+  iniciarMenuAjustes();
   iniciarAbas();
+}
+
+// Menu "Aa" (celular) ------------------------------------------------------
+
+function fecharAjustes() {
+  document.getElementById('controles').classList.remove('aberto');
+  document.getElementById('btn-ajustes').setAttribute('aria-expanded', 'false');
+}
+
+function iniciarMenuAjustes() {
+  const botao = document.getElementById('btn-ajustes');
+  const menu = document.getElementById('controles');
+  botao.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const abrir = !menu.classList.contains('aberto');
+    menu.classList.toggle('aberto', abrir);
+    botao.setAttribute('aria-expanded', String(abrir));
+  });
+  // Fecha ao tocar fora; toques dentro (A-, A+, tema) mantêm aberto para ajustes seguidos
+  document.addEventListener('click', (e) => {
+    if (!menu.contains(e.target)) fecharAjustes();
+  });
+  document.getElementById('btn-foco').addEventListener('click', fecharAjustes);
 }
 
 // ---------------------------------------------------------------------------

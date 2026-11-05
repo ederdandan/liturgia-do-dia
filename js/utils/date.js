@@ -36,6 +36,12 @@ export function partes(iso) {
   return { dia: d.getDate(), mes: d.getMonth() + 1, ano: d.getFullYear() };
 }
 
+/** "Qua., 4 de nov." — para o cabeçalho compacto do celular. */
+export function formatarCurto(iso) {
+  const texto = deISO(iso).toLocaleDateString('pt-BR', { weekday: 'short', day: 'numeric', month: 'short' });
+  return texto.charAt(0).toUpperCase() + texto.slice(1);
+}
+
 export function formatarExtenso(iso) {
   const texto = deISO(iso).toLocaleDateString('pt-BR', {
     weekday: 'long', day: 'numeric', month: 'long', year: 'numeric',

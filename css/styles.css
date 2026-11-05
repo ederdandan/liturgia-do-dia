@@ -78,22 +78,108 @@ body {
 .btn-salvar[aria-pressed="true"] { color: var(--cor-liturgica); }
 .btn-salvar[aria-pressed="true"] svg { fill: currentColor; }
 
-/* ===== Abas ===== */
-.aba {
-  white-space: nowrap;
-  padding: 0.75rem 0.75rem;
-  font-family: Cinzel, Georgia, serif;
-  font-size: 0.8rem;
-  letter-spacing: 0.08em;
-  color: var(--suave);
-  border-bottom: 2px solid transparent;
+/* ===== Controles de leitura =====
+   Celular: menu suspenso aberto pelo botão "Aa". Computador: botões sempre visíveis. */
+.controles {
+  display: none;
+  position: absolute;
+  right: 0;
+  top: calc(100% + 0.4rem);
+  z-index: 30;
+  gap: 0.25rem;
+  padding: 0.35rem;
+  background: var(--superficie);
+  border: 1px solid var(--borda);
+  border-radius: 9999px;
+  box-shadow: 0 8px 24px rgb(0 0 0 / 0.15);
 }
-.aba:hover { color: var(--texto); }
-.aba[aria-selected="true"] { color: var(--texto); border-bottom-color: var(--cor-liturgica); }
+.controles.aberto { display: flex; }
+.controles .btn-icone { background: transparent; }
+#btn-ajustes[aria-expanded="true"] { background: var(--superficie); color: var(--texto); }
+
+@media (min-width: 768px) {
+  .controles {
+    display: flex;
+    position: static;
+    padding: 0;
+    background: none;
+    border: 0;
+    box-shadow: none;
+  }
+}
+
+/* ===== Abas =====
+   Celular (padrão): barra fixa inferior, ícone + rótulo, estilo app.
+   Computador (≥ 768px): abas de texto no topo, fixas ao rolar. */
+#barra-abas {
+  position: fixed;
+  inset: auto 0 0 0;
+  z-index: 20;
+  background: var(--fundo);
+  border-top: 1px solid var(--borda);
+  padding-bottom: env(safe-area-inset-bottom);
+  box-shadow: 0 -4px 16px rgb(0 0 0 / 0.06);
+}
+#abas {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+}
+.aba {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.2rem;
+  min-height: 3.5rem;
+  padding: 0.5rem 0.25rem 0.45rem;
+  font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
+  font-size: 0.68rem;
+  color: var(--suave);
+  -webkit-tap-highlight-color: transparent;
+}
+.aba svg { width: 1.45rem; height: 1.45rem; transition: transform 0.15s; }
+.aba[aria-selected="true"] { color: var(--cor-liturgica); font-weight: 600; }
+.aba[aria-selected="true"] svg { transform: translateY(-1px); }
+.aba[aria-selected="true"] svg path,
+.aba[aria-selected="true"] svg rect,
+.aba[aria-selected="true"] svg circle { stroke-width: 2; }
+.aba:active svg { transform: scale(0.92); }
+
+@media (min-width: 768px) {
+  #barra-abas {
+    position: sticky;
+    top: 0;
+    inset: auto;
+    border-top: 0;
+    border-bottom: 1px solid var(--borda);
+    padding-bottom: 0;
+    box-shadow: none;
+  }
+  #abas {
+    display: flex;
+    gap: 0.25rem;
+    max-width: 48rem;
+    margin: 0 auto;
+    padding: 0 1rem;
+  }
+  .aba {
+    flex-direction: row;
+    min-height: 0;
+    padding: 0.75rem;
+    font-family: Cinzel, Georgia, serif;
+    font-size: 0.8rem;
+    font-weight: 400;
+    letter-spacing: 0.08em;
+    border-bottom: 2px solid transparent;
+  }
+  .aba svg { display: none; }
+  .aba:hover { color: var(--texto); }
+  .aba[aria-selected="true"] { color: var(--texto); font-weight: 400; border-bottom-color: var(--cor-liturgica); }
+}
 
 /* ===== Modo foco ===== */
 .modo-foco .ocultavel { display: none; }
 .modo-foco #btn-sair-foco { display: inline-flex; }
+#btn-sair-foco { bottom: calc(1rem + env(safe-area-inset-bottom)); }
 
 /* ===== Tipografia de leitura ===== */
 .leitura {
