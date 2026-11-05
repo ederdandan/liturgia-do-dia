@@ -6,11 +6,14 @@
   <title>Liturgia do Dia</title>
   <meta name="description" content="Liturgia diária, santo do dia, reflexão e Catena Aurea.">
 
-  <!-- Aplica tema salvo antes da renderização para evitar flash -->
+  <!-- Aplica tema e fonte salvos antes da renderização para evitar flash -->
   <script>
     try {
       var t = localStorage.getItem('pref:tema');
-      if (t) document.documentElement.dataset.theme = t;
+      if (!t && window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches) t = 'dark';
+      document.documentElement.dataset.theme = t || 'light';
+      var f = localStorage.getItem('pref:fonte');
+      if (f) document.documentElement.style.setProperty('--escala-fonte', f);
     } catch (e) {}
   </script>
 
@@ -42,25 +45,89 @@
   <link rel="stylesheet" href="css/styles.css">
 </head>
 <body class="bg-fundo text-texto font-serif antialiased">
-  <a href="#conteudo" class="sr-only focus:not-sr-only">Pular para o conteúdo</a>
+  <a href="#conteudo" class="sr-only focus:not-sr-only focus:absolute focus:p-2">Pular para o conteúdo</a>
 
-  <header id="cabecalho" class="border-b border-borda">
-    <div class="mx-auto max-w-3xl px-4 py-4">
-      <p class="font-display text-sm tracking-widest text-suave">LITURGIA DO DIA</p>
-      <!-- Fase 2: data, título litúrgico, cor, navegação e controles de leitura -->
+  <!-- ===== Cabeçalho ===== -->
+  <header id="cabecalho" class="ocultavel border-b border-borda">
+    <div class="mx-auto max-w-3xl px-4 pt-4 pb-5">
+      <div class="flex items-center justify-between gap-2">
+        <p class="font-display text-xs tracking-[0.25em] text-suave">LITURGIA DO DIA</p>
+
+        <div class="flex items-center gap-1" role="toolbar" aria-label="Controles de leitura">
+          <button id="btn-fonte-menos" class="btn-icone" type="button" aria-label="Diminuir fonte" title="Diminuir fonte">
+            <span class="text-xs">A</span><span class="text-[0.6rem]">−</span>
+          </button>
+          <button id="btn-fonte-mais" class="btn-icone" type="button" aria-label="Aumentar fonte" title="Aumentar fonte">
+            <span class="text-base">A</span><span class="text-[0.6rem]">+</span>
+          </button>
+          <button id="btn-tema" class="btn-icone" type="button" aria-label="Alternar tema" title="Tema">
+            <svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+              <path d="M12 3a9 9 0 1 0 9 9 7 7 0 0 1-9-9Z"/>
+            </svg>
+          </button>
+          <button id="btn-foco" class="btn-icone" type="button" aria-label="Modo leitura sem distrações" title="Modo foco (Esc para sair)">
+            <svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+              <path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Navegação por data -->
+      <div class="mt-4 flex items-center gap-2">
+        <button id="btn-anterior" class="btn-icone" type="button" aria-label="Dia anterior" title="Dia anterior">
+          <svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg>
+        </button>
+        <label class="relative cursor-pointer">
+          <span id="data-extenso" class="text-sm text-suave underline decoration-dotted underline-offset-4"></span>
+          <input id="seletor-data" type="date" class="absolute inset-0 opacity-0 cursor-pointer" aria-label="Escolher data">
+        </label>
+        <button id="btn-proximo" class="btn-icone" type="button" aria-label="Próximo dia" title="Próximo dia">
+          <svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
+        </button>
+        <button id="btn-hoje" class="hidden ml-1 text-xs text-liturgica underline underline-offset-4" type="button">Hoje</button>
+      </div>
+
+      <!-- Título litúrgico e cor -->
+      <div class="mt-3 flex items-start gap-3">
+        <span id="cor-indicador" class="indicador-cor mt-2" aria-hidden="true"></span>
+        <div class="min-w-0">
+          <h1 id="titulo-liturgico" class="font-display text-xl sm:text-2xl leading-snug"></h1>
+          <p id="cor-nome" class="mt-1 text-xs text-suave"></p>
+        </div>
+      </div>
     </div>
   </header>
 
-  <nav id="abas" class="border-b border-borda" aria-label="Seções">
-    <!-- Fase 2: abas Liturgia / Santo / Reflexão / Catena Aurea -->
+  <!-- ===== Abas ===== -->
+  <nav class="ocultavel sticky top-0 z-10 border-b border-borda bg-fundo" aria-label="Seções">
+    <div id="abas" role="tablist" class="mx-auto flex max-w-3xl gap-1 overflow-x-auto px-4">
+      <button role="tab" id="aba-liturgia" aria-controls="painel-liturgia" data-aba="liturgia" class="aba">Liturgia</button>
+      <button role="tab" id="aba-santo" aria-controls="painel-santo" data-aba="santo" class="aba">Santo</button>
+      <button role="tab" id="aba-reflexao" aria-controls="painel-reflexao" data-aba="reflexao" class="aba">Reflexão</button>
+      <button role="tab" id="aba-catena" aria-controls="painel-catena" data-aba="catena" class="aba">Catena Aurea</button>
+      <button role="tab" id="aba-salvos" aria-controls="painel-salvos" data-aba="salvos" class="aba">Salvos</button>
+    </div>
   </nav>
 
+  <!-- ===== Conteúdo ===== -->
   <main id="conteudo" class="mx-auto max-w-3xl px-4 py-8 leitura">
-    <p class="text-suave">Carregando…</p>
+    <section role="tabpanel" id="painel-liturgia" aria-labelledby="aba-liturgia" tabindex="0"></section>
+    <section role="tabpanel" id="painel-santo" aria-labelledby="aba-santo" tabindex="0" hidden></section>
+    <section role="tabpanel" id="painel-reflexao" aria-labelledby="aba-reflexao" tabindex="0" hidden></section>
+    <section role="tabpanel" id="painel-catena" aria-labelledby="aba-catena" tabindex="0" hidden></section>
+    <section role="tabpanel" id="painel-salvos" aria-labelledby="aba-salvos" tabindex="0" hidden></section>
   </main>
 
-  <footer class="mx-auto max-w-3xl px-4 py-8 text-xs text-suave">
-    Uso pessoal e não comercial. Fontes: Liturgia Diária API, Evangelizo.org, Wikipedia, Commentaries-Database.
+  <!-- Saída do modo foco -->
+  <button id="btn-sair-foco" type="button" class="btn-icone fixed bottom-4 right-4 hidden shadow" aria-label="Sair do modo foco" title="Sair do modo foco (Esc)">
+    <svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+      <path d="M9 4v5H4M15 4v5h5M9 20v-5H4M15 20v-5h5"/>
+    </svg>
+  </button>
+
+  <footer class="ocultavel mx-auto max-w-3xl px-4 py-8 text-xs text-suave">
+    Uso pessoal e não comercial. Fontes: Liturgia Diária API (CNBB), Evangelizo.org, Wikipedia, Commentaries-Database.
   </footer>
 
   <script type="module" src="js/app.js"></script>

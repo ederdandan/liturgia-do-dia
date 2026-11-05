@@ -77,7 +77,7 @@ Desenvolver uma aplicação web estática, minimalista e responsiva para leitura
 4. **Patrística & Catena Aurea:**
    * Trechos da *Catena Aurea* cujos versículos **se sobrepõem** à perícope do Evangelho do dia.
    * Agrupados por versículo e identificados por autor (ex.: *São João Crisóstomo*, *Santo Agostinho*).
-   * Indicar a tradução: "Tradução automática a partir da edição inglesa de J. H. Newman (1841)" com opção de ver o original em inglês.
+   * Texto em inglês (tradução de J. H. Newman, 1841), com aviso na tela; nomes dos autores em português.
 
 ---
 
@@ -152,30 +152,20 @@ Desenvolver uma aplicação web estática, minimalista e responsiva para leitura
 
 ### 5.2. Estrutura dos Arquivos Locais da Catena Aurea
 
-Um arquivo por Evangelho (`data/catena/Mt.json`, `Mc.json`, `Lc.json`, `Jo.json`), indexado por **capítulo** e com **faixa de versículos**, para permitir busca por sobreposição (a perícope do dia raramente coincide exatamente com a divisão da Catena):
+Um arquivo **por capítulo** (`data/catena/{Mt,Mc,Lc,Jo}/{capitulo}.json`, 89 arquivos, maior ~180 KB), com **faixa de versículos** para busca por sobreposição. O texto fica **em inglês** (tradução de Newman); só os nomes dos autores são traduzidos.
 
 ```json
 {
-  "livro": "Lc",
-  "fonte": "Catena Aurea — trad. inglesa de J. H. Newman (1841), via HistoricalChristianFaith/Commentaries-Database (domínio público)",
-  "capitulos": {
-    "14": [
-      {
-        "vIni": 25, "vFim": 27,
-        "autor": "São João Crisóstomo",
-        "autorOriginal": "John Chrysostom",
-        "obra": "Catena Aurea",
-        "texto": "Considera como o Senhor atrai os seus ouvintes...",
-        "textoEn": "Consider how the Lord draws his hearers...",
-        "traducao": "automatica",
-        "url": "https://www.ccel.org/ccel/aquinas/catena3.html"
-      }
-    ]
-  }
+  "livro": "Lc", "capitulo": 14, "idioma": "en",
+  "fonte": "Catena Aurea de São Tomás de Aquino — trad. inglesa de J. H. Newman (1841), via HistoricalChristianFaith/Commentaries-Database (domínio público)",
+  "trechos": [
+    { "vIni": 25, "vFim": 25, "autor": "Teofilacto", "autorOriginal": "Theophylact of Ohrid",
+      "citacao": null, "texto": "For because many of those that accompanied Him...", "url": "https://historicalchristian.faith/..." }
+  ]
 }
 ```
 
-**Regra de correspondência:** dada a referência `Lc 14,25-33`, carregar `Lc.json`, ler `capitulos["14"]` e selecionar os itens onde `vIni <= 33 && vFim >= 25`. Referências com múltiplos trechos (`Lc 14,25-27.33`) ou capítulos (`Mt 5,43-6,4`) devem ser divididas antes. Referências com forma alternativa (`1Ts 4,13-18 ou 13-14`, comum aos domingos) usam a forma longa (antes do "ou").
+**Regra de correspondência:** dada a referência `Lc 14,25-33`, carregar `Lc/14.json` e selecionar os trechos onde `vIni <= 33 && vFim >= 25`. Referências com múltiplos trechos (`Lc 14,25-27.33`) ou capítulos (`Mt 5,43-6,4`) devem ser divididas antes. Referências com forma alternativa (`1Ts 4,13-18 ou 13-14`, comum aos domingos) usam a forma longa (antes do "ou").
 
 ### 5.3. Modelo Interno (normalizado pelos adapters)
 ```javascript
@@ -216,7 +206,7 @@ Um arquivo por Evangelho (`data/catena/Mt.json`, `Mc.json`, `Lc.json`, `Jo.json`
 │       ├── sanitize.js         # Sanitização de HTML de terceiros
 │       └── books.js            # Mapeamento de abreviaturas (PT ↔ EN/latim)
 ├── data/
-│   └── catena/                 # Mt.json, Mc.json, Lc.json, Jo.json
+│   └── catena/                 # {Mt,Mc,Lc,Jo}/{capitulo}.json + indice.json
 └── assets/
     └── default-saint.jpg       # Imagem clássica genérica (domínio público)
 ```
@@ -226,12 +216,11 @@ Um arquivo por Evangelho (`data/catena/Mt.json`, `Mc.json`, `Lc.json`, `Jo.json`
 tools/
 └── build_catena.py             # Gera data/catena/*.json
 ```
-Etapas do script:
-1. Baixar `commentaries.sqlite` da release `latest` de `github.com/HistoricalChristianFaith/Commentaries-Database` (~163 MB, **não versionar**; adicionar ao `.gitignore`).
-2. Filtrar `source_title` contendo "Catena Aurea" e livros Matthew/Mark/Luke/John.
-3. Mapear nomes de autores para a forma portuguesa (tabela fixa: *John Chrysostom → São João Crisóstomo*, *Augustine of Hippo → Santo Agostinho*, *Jerome → São Jerônimo*, etc.).
-4. (Opcional) Traduzir `textoEn → texto` com uma ferramenta de tradução automática, marcando `traducao: "automatica"`; sem tradução, a UI exibe o texto em inglês.
-5. Gravar um JSON por Evangelho no formato §5.2.
+Etapas do script (só biblioteca padrão do Python):
+1. Ler `tools/.cache/commentaries.sqlite`, baixado da release `latest` de `github.com/HistoricalChristianFaith/Commentaries-Database` (~163 MB, **não versionado**).
+2. Filtrar `source_title` contendo "Catena" e livros Matthew/Mark/Luke/John (9.273 trechos).
+3. Mapear nomes de autores para a forma portuguesa e separar a citação inicial (ex.: `(in Hom. 37. in Ev)`).
+4. Gravar um JSON por capítulo no formato §5.2 e `data/catena/indice.json`.
 
 ---
 

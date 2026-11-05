@@ -37,7 +37,8 @@ export function partes(iso) {
 }
 
 export function formatarExtenso(iso) {
-  return deISO(iso).toLocaleDateString('pt-BR', {
+  const texto = deISO(iso).toLocaleDateString('pt-BR', {
     weekday: 'long', day: 'numeric', month: 'long', year: 'numeric',
   });
+  return texto.charAt(0).toUpperCase() + texto.slice(1);
 }
