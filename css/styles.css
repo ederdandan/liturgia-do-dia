@@ -251,6 +251,30 @@ body {
   vertical-align: middle;
 }
 
+/* Atalhos para as leituras (topo da aba Liturgia) */
+.atalhos {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 2.25rem;
+}
+.atalho {
+  font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
+  font-size: 0.8rem;
+  padding: 0.35rem 0.85rem;
+  border: 1px solid var(--borda);
+  border-radius: 9999px;
+  color: var(--texto);
+  background: var(--superficie);
+  transition: border-color 0.15s, color 0.15s;
+}
+.atalho:hover { border-color: var(--cor-liturgica); color: var(--cor-liturgica); }
+.atalho:focus-visible { outline: 2px solid var(--cor-liturgica); outline-offset: 2px; }
+[id^="leitura-"] { scroll-margin-top: 1rem; }
+@media (min-width: 768px) {
+  [id^="leitura-"] { scroll-margin-top: 4rem; } /* abaixo das abas fixas no topo */
+}
+
 .cit { color: var(--cor-liturgica); font-weight: 600; white-space: nowrap; }
 
 .credito {

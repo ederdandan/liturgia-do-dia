@@ -184,6 +184,14 @@ function iniciarEventos() {
       }
     }
 
+    // Atalhos da aba Liturgia: rola até a leitura (sem mexer no #data da URL)
+    const atalho = e.target.closest('[data-ir-para]');
+    if (atalho) {
+      const alvo = el(atalho.dataset.irPara);
+      const suave = !matchMedia('(prefers-reduced-motion: reduce)').matches;
+      alvo?.scrollIntoView({ behavior: suave ? 'smooth' : 'auto', block: 'start' });
+    }
+
     // Link de um item salvo: abre a data na aba Liturgia
     if (e.target.closest('[data-ir-liturgia]')) selecionarAba('liturgia');
   });

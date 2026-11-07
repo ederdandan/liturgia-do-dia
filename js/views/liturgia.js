@@ -1,4 +1,4 @@
-// Aba "Liturgia do Dia": antífonas, leituras, salmo, Evangelho e orações.
+// Aba "Liturgia do Dia": leituras, salmo e Evangelho, com atalhos no topo para cada um.
 
 import { escaparHtml } from '../utils/sanitize.js';
 import { botaoSalvar } from './salvos.js';
@@ -8,6 +8,13 @@ const ROTULOS = {
   primeira: 'Primeira Leitura',
   salmo: 'Salmo Responsorial',
   segunda: 'Segunda Leitura',
+  evangelho: 'Evangelho',
+};
+
+const ATALHOS = {
+  primeira: '1ª Leitura',
+  salmo: 'Salmo',
+  segunda: '2ª Leitura',
   evangelho: 'Evangelho',
 };
 
@@ -41,37 +48,33 @@ function itemSalvavel(leitura, opcao) {
 export function renderLiturgia({ dados, fonte }, data) {
   const partes = [];
   ctx = { data, tituloDia: dados.titulo };
-
-  if (dados.antifonas.entrada) {
-    partes.push(blocoAntifona('Antífona de entrada', dados.antifonas.entrada));
-  }
+  const leituras = dados.leituras.filter((l) => ROTULOS[l.tipo]);
 
   // Conta repetições de tipo (ex.: dois Evangelhos no Domingo de Páscoa)
   const totais = {};
-  dados.leituras.forEach((l) => { totais[l.tipo] = (totais[l.tipo] ?? 0) + 1; });
+  leituras.forEach((l) => { totais[l.tipo] = (totais[l.tipo] ?? 0) + 1; });
   const vistos = {};
-  for (const leitura of dados.leituras) {
+  for (const leitura of leituras) {
     vistos[leitura.tipo] = (vistos[leitura.tipo] ?? 0) + 1;
     const opcao = totais[leitura.tipo] > 1 ? (leitura.forma || `opção ${vistos[leitura.tipo]}`) : leitura.forma;
-    partes.push(leitura.tipo === 'salmo' ? blocoSalmo(leitura, opcao) : blocoLeitura(leitura, opcao));
+    // Âncora só na primeira ocorrência de cada tipo (é para lá que o atalho leva)
+    const ancora = vistos[leitura.tipo] === 1 ? `leitura-${leitura.tipo}` : '';
+    partes.push(leitura.tipo === 'salmo' ? blocoSalmo(leitura, opcao, ancora) : blocoLeitura(leitura, opcao, ancora));
   }
 
-  const { coleta, oferendas, comunhao } = dados.oracoes;
-  if (coleta || oferendas || comunhao || dados.antifonas.comunhao) {
-    partes.push(`
-      <section class="bloco">
-        <p class="rotulo">Orações da Missa</p>
-        <div class="mt-4 space-y-6">
-          ${oracao('Oração do dia', coleta)}
-          ${oracao('Sobre as oferendas', oferendas)}
-          ${dados.antifonas.comunhao ? oracao('Antífona da comunhão', dados.antifonas.comunhao, true) : ''}
-          ${oracao('Depois da comunhão', comunhao)}
-        </div>
-      </section>`);
-  }
-
+  partes.unshift(atalhos(leituras));
   partes.push(`<p class="credito">${CREDITOS[fonte] ?? ''}</p>`);
   return partes.join('');
+}
+
+/** Botões no topo que rolam até cada leitura, na ordem em que aparecem. */
+function atalhos(leituras) {
+  const tipos = [...new Set(leituras.map((l) => l.tipo))];
+  if (tipos.length < 2) return '';
+  return `
+    <nav class="atalhos" aria-label="Ir para a leitura">
+      ${tipos.map((t) => `<button type="button" class="atalho" data-ir-para="leitura-${t}">${ATALHOS[t]}</button>`).join('')}
+    </nav>`;
 }
 
 function cabecalho(leitura, opcao) {
@@ -86,12 +89,12 @@ function cabecalho(leitura, opcao) {
     ${leitura.nota ? `<p class="mt-1 text-xs text-suave">${escaparHtml(leitura.nota)}</p>` : ''}`;
 }
 
-function blocoLeitura(leitura, opcao) {
+function blocoLeitura(leitura, opcao, ancora) {
   const corpo = leitura.versiculos
     .map((v) => `${v.n ? `<sup>${v.n}</sup>` : ''}${textoHtml(v.texto)}`)
     .join(' ');
   return `
-    <article class="bloco">
+    <article class="bloco"${ancora ? ` id="${ancora}"` : ''}>
       ${cabecalho(leitura, opcao)}
       <p class="mt-5">${corpo}</p>
       ${leitura.tipo === 'evangelho'
@@ -100,7 +103,7 @@ function blocoLeitura(leitura, opcao) {
     </article>`;
 }
 
-function blocoSalmo(leitura, opcao) {
+function blocoSalmo(leitura, opcao, ancora) {
   const refrao = leitura.refrao
     ? `<p class="refrao mt-5"><span class="rotulo mr-2">R.</span>${escaparHtml(leitura.refrao)}</p>`
     : '';
@@ -108,26 +111,9 @@ function blocoSalmo(leitura, opcao) {
     .map((v) => `<p>${v.n ? `<sup>${v.n}</sup>` : ''}${textoHtml(v.texto)}</p>`)
     .join('');
   return `
-    <article class="bloco">
+    <article class="bloco"${ancora ? ` id="${ancora}"` : ''}>
       ${cabecalho(leitura, opcao)}
       ${refrao}
       <div class="mt-5 space-y-4">${estrofes}</div>
     </article>`;
-}
-
-function blocoAntifona(rotulo, texto) {
-  return `
-    <section class="bloco">
-      <p class="rotulo">${rotulo}</p>
-      <p class="mt-3 italic">${escaparHtml(texto)}</p>
-    </section>`;
-}
-
-function oracao(rotulo, texto, italico = false) {
-  if (!texto) return '';
-  return `
-    <div>
-      <p class="text-sm font-bold">${rotulo}</p>
-      <p class="mt-1 ${italico ? 'italic' : ''}">${escaparHtml(texto)}</p>
-    </div>`;
 }
