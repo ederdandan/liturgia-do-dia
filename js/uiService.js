@@ -154,23 +154,31 @@ function iniciarDeslize() {
   area.addEventListener('animationend', (e) => e.target.classList?.remove('entrar-dir', 'entrar-esq'));
 }
 
-// Painel "Fontes e créditos" ------------------------------------------------
+// Painéis em folha ("Fontes e créditos", "Salvos") ----------------------------
 
-/** @param {() => string} conteudo  HTML do painel, gerado na hora de abrir (fontes do dia atual) */
-export function iniciarPainelFontes(conteudo) {
-  const dialogo = document.getElementById('dialogo-fontes');
-  const botao = document.getElementById('btn-fontes');
-  if (!dialogo?.showModal) { botao.hidden = true; return; }
+/**
+ * Liga um botão do topo a um <dialog class="folha">.
+ * @param {string} nome  "fontes" → #btn-fontes, #dialogo-fontes, #fontes-conteudo
+ * @param {() => string} conteudo  HTML gerado na hora de abrir (sempre com os dados atuais)
+ * @returns {{ abrir: () => void, fechar: () => void, atualizar: () => void }}
+ */
+export function iniciarFolha(nome, conteudo) {
+  const dialogo = document.getElementById(`dialogo-${nome}`);
+  const botao = document.getElementById(`btn-${nome}`);
+  const corpo = document.getElementById(`${nome}-conteudo`);
+  const atualizar = () => { if (dialogo.open) corpo.innerHTML = conteudo(); };
+  const abrir = () => { corpo.innerHTML = conteudo(); if (!dialogo.open) dialogo.showModal(); };
+  const fechar = () => { if (dialogo.open) dialogo.close(); };
+  if (!dialogo?.showModal) { botao.hidden = true; return { abrir() {}, fechar() {}, atualizar() {} }; }
 
-  botao.addEventListener('click', () => {
-    document.getElementById('fontes-conteudo').innerHTML = conteudo();
-    dialogo.showModal();
-  });
+  botao.addEventListener('click', abrir);
   dialogo.addEventListener('click', (e) => {
     // Botão fechar, ou toque no fundo escurecido (fora do conteúdo)
-    if (e.target === dialogo || e.target.closest('[data-fechar-fontes]')) dialogo.close();
+    if (e.target === dialogo || e.target.closest('[data-fechar-folha]')) fechar();
   });
-  dialogo.addEventListener('close', () => botao.focus());
+  // Volta o foco ao botão sem rolar a página (o leitor pode ter ido para outra parte)
+  dialogo.addEventListener('close', () => botao.focus({ preventScroll: true }));
+  return { abrir, fechar, atualizar };
 }
 
 // ---------------------------------------------------------------------------

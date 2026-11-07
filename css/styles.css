@@ -198,8 +198,8 @@ body {
   .instalar { left: auto; right: 1.25rem; bottom: 1.25rem; max-width: 26rem; }
 }
 
-/* ===== Painel "Fontes e créditos" ===== */
-.painel-fontes {
+/* ===== Painéis em folha ("Fontes e créditos", "Salvos") ===== */
+.folha {
   width: 100%;
   max-width: 100%;
   max-height: 85dvh;
@@ -211,32 +211,32 @@ body {
   color: var(--texto);
   box-shadow: 0 -10px 30px rgb(0 0 0 / 0.25);
 }
-.painel-fontes[open] { display: flex; flex-direction: column; animation: subir 0.22s ease-out; }
-.painel-fontes::backdrop { background: rgb(0 0 0 / 0.45); }
-.painel-fontes-topo {
+.folha[open] { display: flex; flex-direction: column; animation: subir 0.22s ease-out; }
+.folha::backdrop { background: rgb(0 0 0 / 0.45); }
+.folha-topo {
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 0.75rem 0.75rem 0.75rem 1.25rem;
   border-bottom: 1px solid var(--borda);
 }
-.painel-fontes-corpo {
+.folha-corpo {
   overflow-y: auto;
   overscroll-behavior: contain;
   padding: 1.25rem 1.25rem calc(1.5rem + env(safe-area-inset-bottom));
   line-height: 1.55;
 }
-.painel-fontes a { color: var(--cor-liturgica); text-decoration: underline; text-underline-offset: 3px; }
+.folha a { color: var(--cor-liturgica); text-decoration: underline; text-underline-offset: 3px; }
 .selo.selo-uso { margin-left: 0.35rem; color: var(--cor-liturgica); border-color: var(--cor-liturgica); font-weight: 400; }
 @keyframes subir { from { transform: translateY(100%); } }
 @media (min-width: 768px) {
-  .painel-fontes {
+  .folha {
     max-width: 34rem;
     max-height: 80vh;
     margin: auto;
     border-radius: 1rem;
   }
-  .painel-fontes[open] { animation: none; }
+  .folha[open] { animation: none; }
 }
 
 /* ===== Modo foco ===== */
@@ -314,6 +314,55 @@ body {
 .btn-ouvir[data-estado="pausado"] { color: var(--cor-liturgica); border-color: var(--cor-liturgica); }
 .btn-ouvir[data-estado="tocando"] .icone-ouvir { display: none; }
 .btn-ouvir[data-estado="tocando"] .icone-pausar { display: block; }
+
+/* ===== Aba Orações ===== */
+#painel-oracoes .bloco { margin-top: 2.75rem; padding-top: 2.75rem; border-top: 1px solid var(--borda); }
+#painel-oracoes > div:first-child > .bloco:first-child { margin-top: 0; padding-top: 0; border-top: 0; }
+.lista-oracoes { border-top: 1px solid var(--borda); }
+.oracao { border-bottom: 1px solid var(--borda); scroll-margin-top: 1rem; }
+.oracao > summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.8rem 0.15rem;
+  cursor: pointer;
+  list-style: none;
+}
+.oracao > summary::-webkit-details-marker { display: none; }
+.oracao > summary::after {
+  content: '';
+  width: 0.5rem;
+  height: 0.5rem;
+  flex: none;
+  border-right: 1.5px solid var(--suave);
+  border-bottom: 1.5px solid var(--suave);
+  transform: rotate(45deg) translateY(-2px);
+  transition: transform 0.15s;
+}
+.oracao[open] > summary::after { transform: rotate(-135deg) translateY(-2px); }
+.oracao[open] > summary { color: var(--cor-liturgica); }
+.oracao-corpo { padding: 0 0.15rem 1.1rem; }
+.oracao.destaque { animation: destaque 1.6s ease-out; }
+@keyframes destaque { from { background: color-mix(in srgb, var(--cor-liturgica) 18%, transparent); } }
+@media (min-width: 768px) { .oracao { scroll-margin-top: 4rem; } }
+.vr { font-weight: 700; color: var(--cor-liturgica); }
+.terco { list-style: none; padding: 0; margin-left: 0.4rem; border-left: 2px solid var(--borda); }
+.terco > li { position: relative; padding: 0 0 1.1rem 1.1rem; }
+.terco > li::before {
+  content: '';
+  position: absolute;
+  left: -0.45rem;
+  top: 0.55em;
+  width: 0.8rem;
+  height: 0.8rem;
+  border-radius: 9999px;
+  background: var(--fundo);
+  border: 2px solid var(--cor-liturgica);
+}
+.link-oracao { color: inherit; text-decoration: underline dotted; text-underline-offset: 3px; }
+.link-oracao:hover { color: var(--cor-liturgica); }
+.atalho[aria-pressed="true"] { border-color: var(--cor-liturgica); color: var(--cor-liturgica); }
 
 /* Atalhos para as leituras (topo da aba Liturgia) */
 .atalhos {
@@ -394,7 +443,7 @@ body {
 #conteudo { overflow-x: clip; } /* a animação não cria rolagem lateral */
 
 @media (prefers-reduced-motion: reduce) {
-  .entrar-dir, .entrar-esq, .painel-fontes[open] { animation: none; }
+  .entrar-dir, .entrar-esq, .folha[open] { animation: none; }
   .skeleton { animation: none; }
   .giro { animation-duration: 2.4s; }
   .carregando-dica { animation-duration: 0s; }

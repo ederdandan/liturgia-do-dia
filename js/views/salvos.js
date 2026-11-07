@@ -1,4 +1,4 @@
-// Aba "Salvos": lista de leituras guardadas, da mais recente para a mais antiga.
+// "Salvos" (botão do marcador no topo): leituras e orações guardadas, da mais recente para a mais antiga.
 
 import { escaparHtml } from '../utils/sanitize.js';
 import { formatarExtenso } from '../utils/date.js';
@@ -20,21 +20,23 @@ export function botaoSalvar(item, salvo) {
 
 export function renderSalvos(itens) {
   if (!itens.length) {
-    return `
-      <p class="rotulo">Leituras salvas</p>
-      <p class="mt-4 italic text-suave">Nenhuma leitura salva ainda. Use o marcador ao lado de cada leitura para guardá-la aqui.</p>`;
+    return `<p class="italic text-suave">Nada salvo ainda. Use o marcador ao lado de cada leitura ou oração para guardá-la aqui.</p>`;
   }
   return `
-    <p class="rotulo">Leituras salvas</p>
-    <ul class="mt-6 space-y-6">
+    <ul class="space-y-4">
       ${itens.map((i) => `
         <li class="rounded-lg border border-borda p-4">
           <div class="flex items-start justify-between gap-3">
             <div class="min-w-0">
+              ${i.tipo === 'oracao' ? `
+              <p class="text-xs text-suave">Oração</p>
+              <button type="button" data-ir-oracao="${escaparHtml(i.oracao)}" class="mt-1 block text-left font-bold text-liturgica underline-offset-4 hover:underline">
+                ${escaparHtml(i.rotulo)}
+              </button>` : `
               <p class="text-xs text-suave">${escaparHtml(formatarExtenso(i.data))} · ${escaparHtml(i.tituloDia ?? '')}</p>
               <a href="#${escaparHtml(i.data)}" data-ir-liturgia class="mt-1 block font-bold text-liturgica underline-offset-4 hover:underline">
                 ${escaparHtml(i.rotulo)} — ${escaparHtml(i.referencia)}
-              </a>
+              </a>`}
               <p class="mt-2 text-[0.95em] text-suave">${escaparHtml(i.trecho)}</p>
             </div>
             <button type="button" class="btn-icone" data-acao="remover-salvo" data-id="${escaparHtml(i.id)}"

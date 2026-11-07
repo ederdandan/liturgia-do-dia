@@ -6,7 +6,7 @@
 // - Imagens (santos): cache primeiro, até 80 imagens.
 // - APIs (liturgia, Evangelizo, Wikipedia): não interceptadas; o app já guarda as respostas no localStorage.
 
-const VERSAO = 'v7';
+const VERSAO = 'v8';
 const CACHE_APP = `app-${VERSAO}`;
 const CACHE_DADOS = `dados-${VERSAO}`;
 const CACHE_IMAGENS = `imagens-${VERSAO}`;
@@ -21,6 +21,7 @@ const ARQUIVOS_APP = [
   'js/audioService.js',
   'js/catenaService.js',
   'js/catecismoService.js',
+  'js/oracoesService.js',
   'js/salvosService.js',
   'js/uiService.js',
   'js/adapters/liturgiaApi.js',
@@ -38,6 +39,9 @@ const ARQUIVOS_APP = [
   'js/views/catecismo.js',
   'js/views/salvos.js',
   'js/views/fontes.js',
+  'js/views/oracoes.js',
+  'js/views/ouvir.js',
+  'data/oracoes.json',
   'js/installService.js',
   'manifest.webmanifest',
   'assets/default-saint.jpg',

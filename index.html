@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Liturgia do Dia</title>
-  <meta name="description" content="Liturgia diária, santo do dia, reflexão, Catena Aurea e Catecismo.">
+  <meta name="description" content="Liturgia diária, santo do dia, reflexão, Catena Aurea, Catecismo e orações.">
 
   <!-- PWA: instalável no celular -->
   <link rel="manifest" href="manifest.webmanifest">
@@ -108,6 +108,14 @@
           </div>
         </div>
 
+        <!-- Leituras e orações salvas (abre o painel) -->
+        <button id="btn-salvos" class="btn-icone order-2" type="button" aria-haspopup="dialog" aria-controls="dialogo-salvos"
+                aria-label="Salvos" title="Salvos">
+          <svg viewBox="0 0 24 24" class="h-[1.1rem] w-[1.1rem]" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true">
+            <path d="M6.5 3.5h11v17l-5.5-3.8-5.5 3.8z"/>
+          </svg>
+        </button>
+
         <!-- Fontes e créditos (abre o painel) -->
         <button id="btn-fontes" class="btn-icone order-2" type="button" aria-haspopup="dialog" aria-controls="dialogo-fontes"
                 aria-label="Fontes e créditos" title="Fontes e créditos">
@@ -162,11 +170,11 @@
         </svg>
         <span>Catecismo</span>
       </button>
-      <button role="tab" id="aba-salvos" aria-controls="painel-salvos" data-aba="salvos" class="aba">
+      <button role="tab" id="aba-oracoes" aria-controls="painel-oracoes" data-aba="oracoes" class="aba">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <path d="M6.5 3.5h11v17l-5.5-3.8-5.5 3.8z"/>
+          <path d="M12 3.5c-1.6 1.7-2.4 4-2.4 6.6v3.4L6 17.5v3h12v-3l-3.6-4V10.1c0-2.6-.8-4.9-2.4-6.6Z"/><path d="M12 3.5v10"/>
         </svg>
-        <span>Salvos</span>
+        <span>Orações</span>
       </button>
     </div>
   </nav>
@@ -178,18 +186,33 @@
     <section role="tabpanel" id="painel-reflexao" aria-labelledby="aba-reflexao" tabindex="0" hidden></section>
     <section role="tabpanel" id="painel-catena" aria-labelledby="aba-catena" tabindex="0" hidden></section>
     <section role="tabpanel" id="painel-catecismo" aria-labelledby="aba-catecismo" tabindex="0" hidden></section>
-    <section role="tabpanel" id="painel-salvos" aria-labelledby="aba-salvos" tabindex="0" hidden></section>
+    <section role="tabpanel" id="painel-oracoes" aria-labelledby="aba-oracoes" tabindex="0" hidden>
+      <div id="oracoes-missa"></div>
+      <div id="oracoes-terco"></div>
+      <div id="oracoes-lista"></div>
+    </section>
   </main>
 
   <!-- Painel "Fontes e créditos": folha que sobe de baixo no celular, janela central no computador -->
-  <dialog id="dialogo-fontes" class="painel-fontes" aria-labelledby="fontes-titulo">
-    <div class="painel-fontes-topo">
+  <dialog id="dialogo-fontes" class="folha" aria-labelledby="fontes-titulo">
+    <div class="folha-topo">
       <h2 id="fontes-titulo" class="font-display text-base">Fontes e créditos</h2>
-      <button type="button" class="btn-icone" data-fechar-fontes aria-label="Fechar" title="Fechar">
+      <button type="button" class="btn-icone" data-fechar-folha aria-label="Fechar" title="Fechar">
         <svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
       </button>
     </div>
-    <div id="fontes-conteudo" class="painel-fontes-corpo"></div>
+    <div id="fontes-conteudo" class="folha-corpo"></div>
+  </dialog>
+
+  <!-- Painel "Salvos" -->
+  <dialog id="dialogo-salvos" class="folha" aria-labelledby="salvos-titulo">
+    <div class="folha-topo">
+      <h2 id="salvos-titulo" class="font-display text-base">Salvos</h2>
+      <button type="button" class="btn-icone" data-fechar-folha aria-label="Fechar" title="Fechar">
+        <svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
+      </button>
+    </div>
+    <div id="salvos-conteudo" class="folha-corpo"></div>
   </dialog>
 
   <!-- Convite para instalar o app (aparece só quando o navegador permite) -->

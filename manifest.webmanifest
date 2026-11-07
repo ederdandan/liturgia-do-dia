@@ -1,7 +1,7 @@
 {
   "name": "Liturgia do Dia",
   "short_name": "Liturgia",
-  "description": "Liturgia diária, santo do dia, reflexão, Catena Aurea e Catecismo.",
+  "description": "Liturgia diária, santo do dia, reflexão, Catena Aurea, Catecismo e orações.",
   "lang": "pt-BR",
   "dir": "ltr",
   "start_url": "./",
@@ -21,6 +21,7 @@
   "shortcuts": [
     { "name": "Santo do Dia", "short_name": "Santo", "url": "./?aba=santo", "icons": [{ "src": "assets/icons/icon-192.png", "sizes": "192x192" }] },
     { "name": "Reflexão", "short_name": "Reflexão", "url": "./?aba=reflexao", "icons": [{ "src": "assets/icons/icon-192.png", "sizes": "192x192" }] },
+    { "name": "Orações", "short_name": "Orações", "url": "./?aba=oracoes", "icons": [{ "src": "assets/icons/icon-192.png", "sizes": "192x192" }] },
     { "name": "Leituras salvas", "short_name": "Salvos", "url": "./?aba=salvos", "icons": [{ "src": "assets/icons/icon-192.png", "sizes": "192x192" }] }
   ]
 }

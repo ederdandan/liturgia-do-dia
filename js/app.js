@@ -1,7 +1,7 @@
 // Ponto de entrada: estado da data (no hash da URL), carregamento dos blocos e renderização.
 
 import { getLiturgia, getSanto, getReflexao } from './apiService.js';
-import { iniciarControles, iniciarPainelFontes, skeletonBloco, carregandoHtml, erroHtml, selecionarAba } from './uiService.js';
+import { iniciarControles, iniciarFolha, skeletonBloco, skeletonTexto, carregandoHtml, erroHtml, selecionarAba } from './uiService.js';
 import { renderFontes } from './views/fontes.js';
 import { listarSalvos, alternarSalvo, removerSalvo } from './salvosService.js';
 import { renderSalvos } from './views/salvos.js';
@@ -14,6 +14,8 @@ import { getCatena } from './catenaService.js';
 import { renderCatena } from './views/catena.js';
 import { getCatecismo } from './catecismoService.js';
 import { renderCatecismo } from './views/catecismo.js';
+import { getOracoes } from './oracoesService.js';
+import { renderListaOracoes, renderTerco, renderMissa, textoOracaoParaOuvir } from './views/oracoes.js';
 import { hojeISO, ehDataISO, somarDias, formatarExtenso, formatarCurto } from './utils/date.js';
 
 const el = (id) => document.getElementById(id);
@@ -22,6 +24,9 @@ const NOMES_COR = { verde: 'verde', branco: 'branco', vermelho: 'vermelho', roxo
 let dataAtual = null;
 let geracao = 0; // descarta respostas de datas que já não estão na tela
 let fontesDia = {}; // fontes usadas na data aberta (painel ⓘ)
+let oracoesJson = null; // data/oracoes.json, quando carregado
+let tercoEscolhido = null; // mistérios escolhidos pelo leitor (null = os do dia)
+let folhaSalvos; // painel "Salvos" (abrir, fechar, atualizar)
 
 // ---------------------------------------------------------------------------
 // Data e roteamento (#AAAA-MM-DD)
@@ -61,6 +66,9 @@ async function carregar(data) {
   delete document.documentElement.dataset.cor;
 
   pararAudio(); // a leitura em voz alta é da data anterior
+  tercoEscolhido = null;
+  renderTercoAtual();
+  el('oracoes-missa').innerHTML = `<section class="bloco"><p class="rotulo">Da Missa do dia</p><div class="mt-4">${skeletonTexto(4)}</div></section>`;
   el('painel-liturgia').innerHTML = skeletonBloco(3);
   el('painel-santo').innerHTML = `<div class="skeleton h-72 w-full rounded-lg"></div><div class="mt-6">${skeletonBloco(1)}</div>`;
 
@@ -107,6 +115,11 @@ async function carregar(data) {
       console.warn(e);
       el('painel-catecismo').innerHTML = erroHtml('Não foi possível carregar o Catecismo.');
     });
+
+  // Orações da Missa: vêm na mesma resposta da liturgia
+  liturgiaP
+    .then((res) => { if (atual()) el('oracoes-missa').innerHTML = renderMissa(res.dados); })
+    .catch(() => { if (atual()) el('oracoes-missa').innerHTML = renderMissa(null); });
 
   reflexaoP
     .then((res) => {
@@ -201,7 +214,8 @@ function iniciarEventos() {
     // Ouvir / pausar uma leitura
     const btnOuvir = e.target.closest('[data-acao="ouvir"]');
     if (btnOuvir) {
-      alternarAudio(btnOuvir.dataset.alvo, textoParaOuvir(btnOuvir.dataset.alvo), (estado) => {
+      const id = btnOuvir.dataset.alvo;
+      alternarAudio(id, textoParaOuvir(id) || textoOracaoParaOuvir(id), (estado) => {
         btnOuvir.dataset.estado = estado;
         btnOuvir.setAttribute('aria-pressed', String(estado === 'tocando'));
         btnOuvir.querySelector('.btn-ouvir-texto').textContent =
@@ -219,7 +233,15 @@ function iniciarEventos() {
     }
 
     // Link de um item salvo: abre a data na aba Liturgia
-    if (e.target.closest('[data-ir-liturgia]')) selecionarAba('liturgia');
+    if (e.target.closest('[data-ir-liturgia]')) { folhaSalvos.fechar(); selecionarAba('liturgia'); }
+
+    // Terço: trocar o conjunto de mistérios
+    const btnTerco = e.target.closest('[data-terco]');
+    if (btnTerco) { tercoEscolhido = btnTerco.dataset.terco; renderTercoAtual(); }
+
+    // Abrir uma oração (do roteiro do Terço ou dos Salvos)
+    const irOracao = e.target.closest('[data-ir-oracao]');
+    if (irOracao) abrirOracao(irOracao.dataset.irOracao);
   });
 
   document.addEventListener('salvos-alterados', renderPainelSalvos);
@@ -237,7 +259,43 @@ function iniciarEventos() {
 }
 
 function renderPainelSalvos() {
-  el('painel-salvos').innerHTML = renderSalvos(listarSalvos());
+  folhaSalvos.atualizar();
+}
+
+// ---------------------------------------------------------------------------
+// Orações
+// ---------------------------------------------------------------------------
+
+function carregarOracoes() {
+  el('oracoes-lista').innerHTML = skeletonBloco(1);
+  getOracoes()
+    .then((json) => {
+      oracoesJson = json;
+      el('oracoes-lista').innerHTML = renderListaOracoes(json); // antes do Terço: define os nomes
+      renderTercoAtual();
+    })
+    .catch((e) => {
+      console.warn(e);
+      el('oracoes-lista').innerHTML = erroHtml('Não foi possível carregar as orações.');
+    });
+}
+
+function renderTercoAtual() {
+  if (oracoesJson && dataAtual) el('oracoes-terco').innerHTML = renderTerco(oracoesJson, dataAtual, tercoEscolhido ?? undefined);
+}
+
+/** Abre a aba Orações na oração pedida, expandida e em destaque. */
+function abrirOracao(id) {
+  folhaSalvos.fechar();
+  selecionarAba('oracoes');
+  const det = el(`oracao-${id}`);
+  if (!det) return;
+  det.open = true;
+  const suave = !matchMedia('(prefers-reduced-motion: reduce)').matches;
+  requestAnimationFrame(() => det.scrollIntoView({ behavior: suave ? 'smooth' : 'auto', block: 'start' }));
+  det.classList.remove('destaque');
+  void det.offsetWidth;
+  det.classList.add('destaque');
 }
 
 // Uso offline: o service worker só funciona via http(s), não em file://
@@ -249,13 +307,15 @@ function registrarServiceWorker() {
 // Atalhos do ícone instalado (manifest "shortcuts"): ?aba=santo, ?aba=salvos...
 function abrirAbaDaUrl() {
   const aba = new URLSearchParams(location.search).get('aba');
-  if (aba) selecionarAba(aba);
+  if (aba === 'salvos') folhaSalvos.abrir();
+  else if (aba) selecionarAba(aba);
 }
 
 iniciarControles();
-iniciarPainelFontes(() => renderFontes(fontesDia));
+iniciarFolha('fontes', () => renderFontes(fontesDia));
+folhaSalvos = iniciarFolha('salvos', () => renderSalvos(listarSalvos()));
 iniciarEventos();
-renderPainelSalvos();
+carregarOracoes();
 abrirAbaDaUrl();
 aoMudarHash();
 registrarServiceWorker();

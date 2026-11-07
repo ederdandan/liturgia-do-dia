@@ -1,0 +1,149 @@
+{
+  "categorias": [
+    {
+      "id": "tradicionais",
+      "nome": "Orações tradicionais",
+      "oracoes": [
+        {
+          "id": "sinal-da-cruz",
+          "titulo": "Sinal da Cruz",
+          "texto": "Pelo sinal da Santa Cruz, livrai-nos, Deus, nosso Senhor, dos nossos inimigos.\nEm nome do Pai, e do Filho, e do Espírito Santo. Amém."
+        },
+        {
+          "id": "pai-nosso",
+          "titulo": "Pai-Nosso",
+          "texto": "Pai nosso, que estais nos céus, santificado seja o vosso nome; venha a nós o vosso reino; seja feita a vossa vontade, assim na terra como no céu.\nO pão nosso de cada dia nos dai hoje; perdoai-nos as nossas ofensas, assim como nós perdoamos a quem nos tem ofendido; e não nos deixeis cair em tentação, mas livrai-nos do mal. Amém."
+        },
+        {
+          "id": "ave-maria",
+          "titulo": "Ave-Maria",
+          "texto": "Ave, Maria, cheia de graça, o Senhor é convosco; bendita sois vós entre as mulheres, e bendito é o fruto do vosso ventre, Jesus.\nSanta Maria, Mãe de Deus, rogai por nós, pecadores, agora e na hora de nossa morte. Amém."
+        },
+        {
+          "id": "gloria",
+          "titulo": "Glória ao Pai",
+          "texto": "Glória ao Pai, e ao Filho, e ao Espírito Santo.\nComo era no princípio, agora e sempre. Amém."
+        },
+        {
+          "id": "credo",
+          "titulo": "Creio (Símbolo dos Apóstolos)",
+          "texto": "Creio em Deus Pai todo-poderoso, criador do céu e da terra; e em Jesus Cristo, seu único Filho, nosso Senhor; que foi concebido pelo poder do Espírito Santo; nasceu da Virgem Maria; padeceu sob Pôncio Pilatos, foi crucificado, morto e sepultado; desceu à mansão dos mortos; ressuscitou ao terceiro dia; subiu aos céus; está sentado à direita de Deus Pai todo-poderoso, donde há de vir a julgar os vivos e os mortos.\nCreio no Espírito Santo, na santa Igreja Católica, na comunhão dos santos, na remissão dos pecados, na ressurreição da carne, na vida eterna. Amém."
+        },
+        {
+          "id": "o-meu-jesus",
+          "titulo": "Ó meu Jesus",
+          "nota": "Rezada ao fim de cada dezena do Terço.",
+          "texto": "Ó meu Jesus, perdoai-nos, livrai-nos do fogo do inferno, levai as almas todas para o céu e socorrei principalmente as que mais precisarem."
+        },
+        {
+          "id": "santo-anjo",
+          "titulo": "Santo Anjo",
+          "texto": "Santo Anjo do Senhor, meu zeloso guardador, se a ti me confiou a piedade divina, sempre me rege, me guarda, me governa e me ilumina. Amém."
+        },
+        {
+          "id": "vinde-espirito-santo",
+          "titulo": "Vinde, Espírito Santo",
+          "texto": "Vinde, Espírito Santo, enchei os corações dos vossos fiéis e acendei neles o fogo do vosso amor.\nV. Enviai o vosso Espírito e tudo será criado.\nR. E renovareis a face da terra.\nOremos: Ó Deus, que instruístes os corações dos vossos fiéis com a luz do Espírito Santo, concedei-nos que, no mesmo Espírito, saibamos o que é reto e gozemos sempre de sua consolação. Por Cristo, Senhor nosso. Amém."
+        },
+        {
+          "id": "alma-de-cristo",
+          "titulo": "Alma de Cristo",
+          "texto": "Alma de Cristo, santificai-me.\nCorpo de Cristo, salvai-me.\nSangue de Cristo, inebriai-me.\nÁgua do lado de Cristo, lavai-me.\nPaixão de Cristo, confortai-me.\nÓ bom Jesus, ouvi-me.\nDentro de vossas chagas, escondei-me.\nNão permitais que me separe de vós.\nDo espírito maligno, defendei-me.\nNa hora da minha morte, chamai-me e mandai-me ir para vós, para que com os vossos santos vos louve por todos os séculos dos séculos. Amém."
+        },
+        {
+          "id": "ato-de-contricao",
+          "titulo": "Ato de Contrição",
+          "texto": "Senhor meu Jesus Cristo, Deus e Homem verdadeiro, Criador e Redentor meu, por serdes vós quem sois, sumamente bom e digno de ser amado sobre todas as coisas, e porque vos amo e estimo, pesa-me, Senhor, de todo o meu coração, de vos ter ofendido; pesa-me também por ter perdido o céu e merecido o inferno.\nE proponho firmemente, ajudado com os auxílios da vossa divina graça, emendar-me e nunca mais vos tornar a ofender, e espero alcançar o perdão de minhas culpas pela vossa infinita misericórdia. Amém."
+        }
+      ]
+    },
+    {
+      "id": "marianas",
+      "nome": "Orações a Nossa Senhora",
+      "oracoes": [
+        {
+          "id": "salve-rainha",
+          "titulo": "Salve-Rainha",
+          "texto": "Salve, Rainha, Mãe de misericórdia, vida, doçura e esperança nossa, salve! A vós bradamos, os degredados filhos de Eva; a vós suspiramos, gemendo e chorando neste vale de lágrimas.\nEia, pois, advogada nossa, esses vossos olhos misericordiosos a nós volvei; e depois deste desterro, mostrai-nos Jesus, bendito fruto do vosso ventre, ó clemente, ó piedosa, ó doce sempre Virgem Maria.\nV. Rogai por nós, santa Mãe de Deus.\nR. Para que sejamos dignos das promessas de Cristo. Amém."
+        },
+        {
+          "id": "angelus",
+          "titulo": "Angelus",
+          "nota": "Rezado de manhã, ao meio-dia e ao fim da tarde. No Tempo Pascal, reza-se a Rainha do Céu.",
+          "texto": "V. O Anjo do Senhor anunciou a Maria.\nR. E ela concebeu do Espírito Santo.\nAve, Maria…\nV. Eis aqui a serva do Senhor.\nR. Faça-se em mim segundo a vossa palavra.\nAve, Maria…\nV. E o Verbo se fez carne.\nR. E habitou entre nós.\nAve, Maria…\nV. Rogai por nós, santa Mãe de Deus.\nR. Para que sejamos dignos das promessas de Cristo.\nOremos: Infundi, Senhor, como vos pedimos, a vossa graça em nossas almas, para que nós, que pela anunciação do Anjo conhecemos a encarnação de Cristo, vosso Filho, por sua paixão e morte sejamos conduzidos à glória da ressurreição. Pelo mesmo Cristo, Senhor nosso. Amém."
+        },
+        {
+          "id": "rainha-do-ceu",
+          "titulo": "Rainha do Céu",
+          "nota": "Substitui o Angelus no Tempo Pascal (da Páscoa a Pentecostes).",
+          "texto": "Rainha do céu, alegrai-vos, aleluia!\nPorque quem merecestes trazer em vosso seio, aleluia!\nRessuscitou como disse, aleluia!\nRogai a Deus por nós, aleluia!\nV. Exultai e alegrai-vos, ó Virgem Maria, aleluia!\nR. Porque o Senhor ressuscitou verdadeiramente, aleluia!\nOremos: Ó Deus, que vos dignastes alegrar o mundo com a ressurreição do vosso Filho, nosso Senhor Jesus Cristo, concedei-nos, vos suplicamos, que por sua Mãe, a Virgem Maria, alcancemos as alegrias da vida eterna. Pelo mesmo Cristo, Senhor nosso. Amém."
+        },
+        {
+          "id": "lembrai-vos",
+          "titulo": "Lembrai-vos",
+          "texto": "Lembrai-vos, ó piíssima Virgem Maria, que nunca se ouviu dizer que algum daqueles que têm recorrido à vossa proteção, implorado a vossa assistência e reclamado o vosso socorro, fosse por vós desamparado.\nAnimado eu, pois, com igual confiança, a vós, ó Virgem entre todas singular, como a Mãe recorro, de vós me valho e, gemendo sob o peso dos meus pecados, me prostro a vossos pés.\nNão desprezeis as minhas súplicas, ó Mãe do Verbo de Deus humanado, mas dignai-vos de as ouvir propícia e de me alcançar o que vos rogo. Amém."
+        },
+        {
+          "id": "a-vossa-protecao",
+          "titulo": "À vossa proteção",
+          "texto": "À vossa proteção recorremos, santa Mãe de Deus; não desprezeis as nossas súplicas em nossas necessidades, mas livrai-nos sempre de todos os perigos, ó Virgem gloriosa e bendita. Amém."
+        }
+      ]
+    }
+  ],
+  "terco": {
+    "nomes": {
+      "gozosos": "Mistérios Gozosos",
+      "luminosos": "Mistérios Luminosos",
+      "dolorosos": "Mistérios Dolorosos",
+      "gloriosos": "Mistérios Gloriosos"
+    },
+    "misterios": {
+      "gozosos": [
+        "A Anunciação do Anjo a Nossa Senhora",
+        "A Visitação de Nossa Senhora a sua prima Isabel",
+        "O Nascimento de Jesus em Belém",
+        "A Apresentação do Menino Jesus no Templo",
+        "A Perda e o Encontro do Menino Jesus no Templo"
+      ],
+      "luminosos": [
+        "O Batismo de Jesus no rio Jordão",
+        "A Autorrevelação de Jesus nas Bodas de Caná",
+        "O Anúncio do Reino de Deus com o convite à conversão",
+        "A Transfiguração de Jesus",
+        "A Instituição da Eucaristia"
+      ],
+      "dolorosos": [
+        "A Agonia de Jesus no Horto das Oliveiras",
+        "A Flagelação de Jesus",
+        "A Coroação de espinhos",
+        "Jesus carrega a cruz até o Calvário",
+        "A Crucifixão e morte de Jesus"
+      ],
+      "gloriosos": [
+        "A Ressurreição de Jesus",
+        "A Ascensão de Jesus ao céu",
+        "A Vinda do Espírito Santo sobre os Apóstolos e Nossa Senhora",
+        "A Assunção de Nossa Senhora ao céu",
+        "A Coroação de Nossa Senhora como Rainha do céu e da terra"
+      ]
+    },
+    "porDiaDaSemana": ["gloriosos", "gozosos", "dolorosos", "gloriosos", "luminosos", "dolorosos", "gozosos"],
+    "inicio": [
+      { "oracao": "sinal-da-cruz" },
+      { "oracao": "credo" },
+      { "oracao": "pai-nosso" },
+      { "oracao": "ave-maria", "vezes": 3, "nota": "pelo aumento da fé, da esperança e da caridade" },
+      { "oracao": "gloria" }
+    ],
+    "dezena": [
+      { "oracao": "pai-nosso" },
+      { "oracao": "ave-maria", "vezes": 10 },
+      { "oracao": "gloria" },
+      { "oracao": "o-meu-jesus" }
+    ],
+    "fim": [
+      { "oracao": "salve-rainha" }
+    ]
+  }
+}
