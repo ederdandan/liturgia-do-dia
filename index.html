@@ -83,46 +83,56 @@
           <button id="btn-hoje" class="hidden ml-1 text-xs text-liturgica underline underline-offset-4" type="button">Hoje</button>
         </div>
 
-        <!-- Controles de leitura: menu "Aa" no celular, botões visíveis no computador -->
-        <div class="relative order-2">
-          <button id="btn-ajustes" class="btn-icone md:hidden" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="controles" aria-label="Ajustes de leitura" title="Ajustes de leitura">
-            <span class="font-display text-sm">Aa</span>
-          </button>
-          <div id="controles" class="controles" role="toolbar" aria-label="Controles de leitura">
-          <button id="btn-fonte-menos" class="btn-icone" type="button" aria-label="Diminuir fonte" title="Diminuir fonte">
-            <span class="text-xs">A</span><span class="text-[0.6rem]">−</span>
-          </button>
-          <button id="btn-fonte-mais" class="btn-icone" type="button" aria-label="Aumentar fonte" title="Aumentar fonte">
-            <span class="text-base">A</span><span class="text-[0.6rem]">+</span>
-          </button>
-          <button id="btn-tema" class="btn-icone" type="button" aria-label="Alternar tema" title="Tema">
-            <svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
-              <path d="M12 3a9 9 0 1 0 9 9 7 7 0 0 1-9-9Z"/>
+        <!-- Topo: Salvos sempre à vista; o resto no menu ⋮ (Mais opções) -->
+        <div class="relative order-2 flex items-center gap-0.5">
+          <button id="btn-salvos" class="btn-icone" type="button" aria-haspopup="dialog" aria-controls="dialogo-salvos"
+                  aria-label="Salvos" title="Salvos">
+            <svg viewBox="0 0 24 24" class="h-[1.1rem] w-[1.1rem]" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true">
+              <path d="M6.5 3.5h11v17l-5.5-3.8-5.5 3.8z"/>
             </svg>
           </button>
-          <button id="btn-foco" class="btn-icone" type="button" aria-label="Modo leitura sem distrações" title="Modo foco (Esc para sair)">
-            <svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
-              <path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/>
+          <button id="btn-mais" class="btn-icone" type="button" aria-haspopup="menu" aria-expanded="false" aria-controls="menu-mais"
+                  aria-label="Mais opções" title="Mais opções">
+            <svg viewBox="0 0 24 24" class="h-[1.15rem] w-[1.15rem]" fill="currentColor" aria-hidden="true">
+              <circle cx="12" cy="5.5" r="1.7"/><circle cx="12" cy="12" r="1.7"/><circle cx="12" cy="18.5" r="1.7"/>
             </svg>
           </button>
+
+          <div id="menu-mais" class="menu-mais" role="menu" aria-labelledby="btn-mais" hidden>
+            <div class="menu-linha">
+              <span class="menu-icone" aria-hidden="true"><span class="font-display text-sm">Aa</span></span>
+              <span class="flex-1">Tamanho do texto</span>
+              <button id="btn-fonte-menos" class="btn-icone" type="button" role="menuitem" aria-label="Diminuir texto" title="Diminuir">
+                <span class="text-xs">A</span><span class="text-[0.6rem]">−</span>
+              </button>
+              <span id="fonte-valor" class="w-11 text-center text-xs text-suave" aria-live="polite">100%</span>
+              <button id="btn-fonte-mais" class="btn-icone" type="button" role="menuitem" aria-label="Aumentar texto" title="Aumentar">
+                <span class="text-base">A</span><span class="text-[0.6rem]">+</span>
+              </button>
+            </div>
+            <button id="btn-tema" class="menu-item" type="button" role="menuitem">
+              <svg viewBox="0 0 24 24" class="menu-icone" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+                <path d="M12 3a9 9 0 1 0 9 9 7 7 0 0 1-9-9Z"/>
+              </svg>
+              <span class="flex-1">Tema</span>
+              <span id="tema-nome" class="text-xs text-suave"></span>
+            </button>
+            <button id="btn-foco" class="menu-item" type="button" role="menuitem">
+              <svg viewBox="0 0 24 24" class="menu-icone" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+                <path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/>
+              </svg>
+              <span class="flex-1">Modo foco</span>
+              <span class="hidden md:inline text-xs text-suave">Esc sai</span>
+            </button>
+            <hr class="menu-divisor">
+            <button id="btn-fontes" class="menu-item" type="button" role="menuitem" aria-haspopup="dialog" aria-controls="dialogo-fontes">
+              <svg viewBox="0 0 24 24" class="menu-icone" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true">
+                <circle cx="12" cy="12" r="9"/><path d="M12 11v5.5"/><path d="M12 7.6v.1"/>
+              </svg>
+              <span class="flex-1">Fontes e créditos</span>
+            </button>
           </div>
         </div>
-
-        <!-- Leituras e orações salvas (abre o painel) -->
-        <button id="btn-salvos" class="btn-icone order-2" type="button" aria-haspopup="dialog" aria-controls="dialogo-salvos"
-                aria-label="Salvos" title="Salvos">
-          <svg viewBox="0 0 24 24" class="h-[1.1rem] w-[1.1rem]" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true">
-            <path d="M6.5 3.5h11v17l-5.5-3.8-5.5 3.8z"/>
-          </svg>
-        </button>
-
-        <!-- Fontes e créditos (abre o painel) -->
-        <button id="btn-fontes" class="btn-icone order-2" type="button" aria-haspopup="dialog" aria-controls="dialogo-fontes"
-                aria-label="Fontes e créditos" title="Fontes e créditos">
-          <svg viewBox="0 0 24 24" class="h-[1.1rem] w-[1.1rem]" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true">
-            <circle cx="12" cy="12" r="9"/><path d="M12 11v5.5"/><path d="M12 7.6v.1"/>
-          </svg>
-        </button>
       </div>
 
       <!-- Título litúrgico e cor -->
@@ -172,7 +182,7 @@
       </button>
       <button role="tab" id="aba-oracoes" aria-controls="painel-oracoes" data-aba="oracoes" class="aba">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <path d="M12 3.5c-1.6 1.7-2.4 4-2.4 6.6v3.4L6 17.5v3h12v-3l-3.6-4V10.1c0-2.6-.8-4.9-2.4-6.6Z"/><path d="M12 3.5v10"/>
+          <circle class="contas" cx="12" cy="7.8" r="5.5"/><path class="contas" d="M12 14.4v2.9"/><path d="M12 18.7v3.8"/><path d="M10.2 20.1h3.6"/>
         </svg>
         <span>Orações</span>
       </button>

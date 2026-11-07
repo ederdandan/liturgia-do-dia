@@ -6,7 +6,7 @@
 // - Imagens (santos): cache primeiro, até 80 imagens.
 // - APIs (liturgia, Evangelizo, Wikipedia): não interceptadas; o app já guarda as respostas no localStorage.
 
-const VERSAO = 'v8';
+const VERSAO = 'v9';
 const CACHE_APP = `app-${VERSAO}`;
 const CACHE_DADOS = `dados-${VERSAO}`;
 const CACHE_IMAGENS = `imagens-${VERSAO}`;

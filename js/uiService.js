@@ -30,10 +30,9 @@ export function alternarTema() {
 }
 
 function atualizarRotuloTema() {
-  const btn = document.getElementById('btn-tema');
   const nome = NOMES_TEMA[raiz.dataset.theme] ?? 'claro';
-  btn.title = `Tema: ${nome}`;
-  btn.setAttribute('aria-label', `Tema atual: ${nome}. Alternar tema`);
+  document.getElementById('tema-nome').textContent = nome;
+  document.getElementById('btn-tema').setAttribute('aria-label', `Tema atual: ${nome}. Alternar tema`);
 }
 
 // Fonte -------------------------------------------------------------------
@@ -47,6 +46,14 @@ export function mudarFonte(passo) {
   const nova = ESCALAS[Math.min(ESCALAS.length - 1, Math.max(0, i + passo))];
   raiz.style.setProperty('--escala-fonte', String(nova));
   gravarPref('fonte', String(nova));
+  atualizarRotuloFonte();
+}
+
+function atualizarRotuloFonte() {
+  const escala = Number(lerPref('fonte', '1')) || 1;
+  document.getElementById('fonte-valor').textContent = `${Math.round(escala * 100)}%`;
+  document.getElementById('btn-fonte-menos').disabled = escala <= ESCALAS[0];
+  document.getElementById('btn-fonte-mais').disabled = escala >= ESCALAS[ESCALAS.length - 1];
 }
 
 // Modo foco ---------------------------------------------------------------
@@ -187,6 +194,7 @@ export function iniciarFolha(nome, conteudo) {
 
 export function iniciarControles() {
   atualizarRotuloTema();
+  atualizarRotuloFonte();
   document.getElementById('btn-tema').addEventListener('click', alternarTema);
   document.getElementById('btn-fonte-menos').addEventListener('click', () => mudarFonte(-1));
   document.getElementById('btn-fonte-mais').addEventListener('click', () => mudarFonte(1));
@@ -195,34 +203,53 @@ export function iniciarControles() {
   document.addEventListener('keydown', (e) => {
     if (e.key !== 'Escape') return;
     if (document.body.classList.contains('modo-foco')) alternarFoco(false);
-    fecharAjustes();
   });
-  iniciarMenuAjustes();
+  iniciarMenuMais();
   iniciarAbas();
   iniciarDeslize();
 }
 
-// Menu "Aa" (celular) ------------------------------------------------------
+// Menu ⋮ "Mais opções" -------------------------------------------------------
 
-function fecharAjustes() {
-  document.getElementById('controles').classList.remove('aberto');
-  document.getElementById('btn-ajustes').setAttribute('aria-expanded', 'false');
-}
+function iniciarMenuMais() {
+  const botao = document.getElementById('btn-mais');
+  const menu = document.getElementById('menu-mais');
+  const itens = () => [...menu.querySelectorAll('[role="menuitem"]:not(:disabled)')];
 
-function iniciarMenuAjustes() {
-  const botao = document.getElementById('btn-ajustes');
-  const menu = document.getElementById('controles');
+  const fechar = (devolverFoco = false) => {
+    if (menu.hidden) return;
+    menu.hidden = true;
+    botao.setAttribute('aria-expanded', 'false');
+    if (devolverFoco) botao.focus();
+  };
+  const abrir = (focarPrimeiro) => {
+    menu.hidden = false;
+    botao.setAttribute('aria-expanded', 'true');
+    if (focarPrimeiro) itens()[0]?.focus();
+  };
+
   botao.addEventListener('click', (e) => {
     e.stopPropagation();
-    const abrir = !menu.classList.contains('aberto');
-    menu.classList.toggle('aberto', abrir);
-    botao.setAttribute('aria-expanded', String(abrir));
+    // e.detail === 0: aberto pelo teclado (Enter/Espaço) → foco no primeiro item
+    if (menu.hidden) abrir(e.detail === 0); else fechar();
   });
-  // Fecha ao tocar fora; toques dentro (A-, A+, tema) mantêm aberto para ajustes seguidos
+  // Fecha ao tocar fora. Tamanho do texto e tema mantêm aberto, para ajustes seguidos.
   document.addEventListener('click', (e) => {
-    if (!menu.contains(e.target)) fecharAjustes();
+    if (!menu.contains(e.target) && e.target !== botao) fechar();
   });
-  document.getElementById('btn-foco').addEventListener('click', fecharAjustes);
+  document.getElementById('btn-foco').addEventListener('click', () => fechar());
+  document.getElementById('btn-fontes').addEventListener('click', () => fechar());
+
+  // Teclado: setas percorrem os itens, Esc fecha, Tab sai do menu
+  menu.addEventListener('keydown', (e) => {
+    const lista = itens();
+    const i = lista.indexOf(document.activeElement);
+    const destino = { ArrowDown: lista[(i + 1) % lista.length], ArrowUp: lista[(i - 1 + lista.length) % lista.length],
+      Home: lista[0], End: lista[lista.length - 1] }[e.key];
+    if (destino) { e.preventDefault(); destino.focus(); }
+    if (e.key === 'Escape') { e.stopPropagation(); fechar(true); }
+    if (e.key === 'Tab') fechar();
+  });
 }
 
 // ---------------------------------------------------------------------------
