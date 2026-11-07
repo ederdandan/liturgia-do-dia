@@ -10,6 +10,8 @@ import { renderSanto, IMAGEM_PADRAO } from './views/santo.js';
 import { renderReflexao } from './views/reflexao.js';
 import { getCatena } from './catenaService.js';
 import { renderCatena } from './views/catena.js';
+import { getCatecismo } from './catecismoService.js';
+import { renderCatecismo } from './views/catecismo.js';
 import { hojeISO, ehDataISO, somarDias, formatarExtenso, formatarCurto } from './utils/date.js';
 
 const el = (id) => document.getElementById(id);
@@ -59,6 +61,7 @@ async function carregar(data) {
 
   el('painel-reflexao').innerHTML = skeletonBloco(1);
   el('painel-catena').innerHTML = skeletonBloco(2);
+  el('painel-catecismo').innerHTML = skeletonBloco(2);
 
   const liturgiaP = getLiturgia(data);
   const santoP = getSanto(data, liturgiaP);
@@ -76,6 +79,20 @@ async function carregar(data) {
       if (!atual()) return;
       console.warn(e);
       el('painel-catena').innerHTML = erroHtml('Não foi possível carregar a Catena Aurea.');
+    });
+
+  // Catecismo: parágrafos que citam o(s) Evangelho(s) do dia
+  liturgiaP
+    .then((res) => Promise.all(res.dados.leituras
+      .filter((l) => l.tipo === 'evangelho')
+      .map((l) => getCatecismo(l.referencia))))
+    .then((resultados) => {
+      if (atual()) el('painel-catecismo').innerHTML = renderCatecismo(resultados);
+    })
+    .catch((e) => {
+      if (!atual()) return;
+      console.warn(e);
+      el('painel-catecismo').innerHTML = erroHtml('Não foi possível carregar o Catecismo.');
     });
 
   reflexaoP

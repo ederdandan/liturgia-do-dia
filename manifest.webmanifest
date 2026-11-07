@@ -1,7 +1,7 @@
 {
   "name": "Liturgia do Dia",
   "short_name": "Liturgia",
-  "description": "Liturgia diária, santo do dia, reflexão e Catena Aurea.",
+  "description": "Liturgia diária, santo do dia, reflexão, Catena Aurea e Catecismo.",
   "lang": "pt-BR",
   "dir": "ltr",
   "start_url": "./",

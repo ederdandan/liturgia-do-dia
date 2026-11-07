@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Liturgia do Dia</title>
-  <meta name="description" content="Liturgia diária, santo do dia, reflexão e Catena Aurea.">
+  <meta name="description" content="Liturgia diária, santo do dia, reflexão, Catena Aurea e Catecismo.">
 
   <!-- PWA: instalável no celular -->
   <link rel="manifest" href="manifest.webmanifest">
@@ -148,6 +148,12 @@
         </svg>
         <span class="md:hidden">Catena</span><span class="hidden md:inline">Catena Aurea</span>
       </button>
+      <button role="tab" id="aba-catecismo" aria-controls="painel-catecismo" data-aba="catecismo" class="aba">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M5 4.5A1.5 1.5 0 0 1 6.5 3H19v15H6.5A1.5 1.5 0 0 0 5 19.5Z"/><path d="M5 19.5A1.5 1.5 0 0 0 6.5 21H19v-3"/><path d="M12 6.5v7"/><path d="M9.5 9h5"/>
+        </svg>
+        <span>Catecismo</span>
+      </button>
       <button role="tab" id="aba-salvos" aria-controls="painel-salvos" data-aba="salvos" class="aba">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <path d="M6.5 3.5h11v17l-5.5-3.8-5.5 3.8z"/>
@@ -163,6 +169,7 @@
     <section role="tabpanel" id="painel-santo" aria-labelledby="aba-santo" tabindex="0" hidden></section>
     <section role="tabpanel" id="painel-reflexao" aria-labelledby="aba-reflexao" tabindex="0" hidden></section>
     <section role="tabpanel" id="painel-catena" aria-labelledby="aba-catena" tabindex="0" hidden></section>
+    <section role="tabpanel" id="painel-catecismo" aria-labelledby="aba-catecismo" tabindex="0" hidden></section>
     <section role="tabpanel" id="painel-salvos" aria-labelledby="aba-salvos" tabindex="0" hidden></section>
   </main>
 

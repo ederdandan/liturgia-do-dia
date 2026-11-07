@@ -1,11 +1,12 @@
 // Service worker: permite abrir o app sem internet.
 // - Arquivos do app: rede primeiro (atualizações aparecem logo), cache se offline.
 // - Catena Aurea (data/catena): cache primeiro (dados estáticos).
+// - Catena em português e Catecismo (GitHub): cache, atualizando em segundo plano.
 // - Tailwind e Google Fonts: cache e atualização em segundo plano.
 // - Imagens (santos): cache primeiro, até 80 imagens.
 // - APIs (liturgia, Evangelizo, Wikipedia): não interceptadas; o app já guarda as respostas no localStorage.
 
-const VERSAO = 'v4';
+const VERSAO = 'v5';
 const CACHE_APP = `app-${VERSAO}`;
 const CACHE_DADOS = `dados-${VERSAO}`;
 const CACHE_IMAGENS = `imagens-${VERSAO}`;
@@ -18,6 +19,7 @@ const ARQUIVOS_APP = [
   'js/app.js',
   'js/apiService.js',
   'js/catenaService.js',
+  'js/catecismoService.js',
   'js/salvosService.js',
   'js/uiService.js',
   'js/adapters/liturgiaApi.js',
@@ -32,6 +34,7 @@ const ARQUIVOS_APP = [
   'js/views/santo.js',
   'js/views/reflexao.js',
   'js/views/catena.js',
+  'js/views/catecismo.js',
   'js/views/salvos.js',
   'js/installService.js',
   'manifest.webmanifest',
@@ -67,8 +70,9 @@ self.addEventListener('fetch', (e) => {
   if (url.origin === location.origin) {
     if (url.pathname.includes('/data/catena/')) e.respondWith(cachePrimeiro(req, CACHE_DADOS));
     else e.respondWith(redePrimeiro(req));
-  } else if (url.hostname === 'raw.githubusercontent.com' && url.pathname.includes('/catena-aurea/')) {
-    // Catena em português (~1–2 MB por Evangelho): cache, atualizando em segundo plano
+  } else if (url.hostname === 'raw.githubusercontent.com'
+    && (url.pathname.includes('/catena-aurea/') || url.pathname.includes('/catechism-cross-reference/'))) {
+    // Catena em português (~1–2 MB por Evangelho) e Catecismo (~1 MB): cache, atualizando em segundo plano
     e.respondWith(atualizarEmSegundoPlano(req, CACHE_DADOS));
   } else if (CDNS.includes(url.hostname)) {
     e.respondWith(atualizarEmSegundoPlano(req));
