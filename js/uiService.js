@@ -166,6 +166,20 @@ export function skeletonBloco(blocos = 2) {
     </div>`).join('')}</div>`;
 }
 
+/**
+ * Carregamento com mensagem: indicador girando + texto, e uma dica que só aparece
+ * se a espera passar de alguns segundos (via CSS, sem timers). Abaixo, o skeleton.
+ */
+export function carregandoHtml(texto, dica = '', blocos = 2) {
+  return `
+    <div role="status" class="carregando">
+      <span class="giro" aria-hidden="true"></span>
+      <span>${escaparHtml(texto)}</span>
+    </div>
+    ${dica ? `<p class="carregando-dica text-sm text-suave">${escaparHtml(dica)}</p>` : ''}
+    <div class="mt-6">${skeletonBloco(blocos)}</div>`;
+}
+
 /** Mensagem de erro amigável com botão "Tentar novamente". */
 export function erroHtml(titulo, detalhe = '') {
   return `

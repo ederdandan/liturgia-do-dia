@@ -1,7 +1,7 @@
 // Ponto de entrada: estado da data (no hash da URL), carregamento dos blocos e renderização.
 
 import { getLiturgia, getSanto, getReflexao } from './apiService.js';
-import { iniciarControles, skeletonBloco, erroHtml, selecionarAba } from './uiService.js';
+import { iniciarControles, skeletonBloco, carregandoHtml, erroHtml, selecionarAba } from './uiService.js';
 import { listarSalvos, alternarSalvo, removerSalvo } from './salvosService.js';
 import { renderSalvos } from './views/salvos.js';
 import { iniciarInstalacao } from './installService.js';
@@ -61,7 +61,10 @@ async function carregar(data) {
 
   el('painel-reflexao').innerHTML = skeletonBloco(1);
   el('painel-catena').innerHTML = skeletonBloco(2);
-  el('painel-catecismo').innerHTML = skeletonBloco(2);
+  el('painel-catecismo').innerHTML = carregandoHtml(
+    'Carregando o Catecismo…',
+    'Na primeira vez, a base do Catecismo (cerca de 1 MB) é baixada. Depois fica guardada no aparelho.',
+  );
 
   const liturgiaP = getLiturgia(data);
   const santoP = getSanto(data, liturgiaP);
