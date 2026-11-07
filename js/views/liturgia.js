@@ -19,11 +19,6 @@ const ATALHOS = {
   evangelho: 'Evangelho',
 };
 
-const CREDITOS = {
-  'liturgia-api': 'Fonte: Liturgia Diária API · tradução litúrgica da CNBB',
-  evangelizo: 'Fonte: <a href="https://evangelizo.org" target="_blank" rel="noopener">Evangelizo.org</a> · tradução portuguesa (fonte reserva: a fonte principal está indisponível)',
-};
-
 const textoHtml = (t) => escaparHtml(t).replace(/\n/g, '<br>');
 
 let ctx = { data: '', tituloDia: '' }; // contexto da renderização atual
@@ -103,7 +98,10 @@ export function renderLiturgia({ dados, fonte }, data) {
   }
 
   partes.unshift(atalhos(leituras));
-  partes.push(`<p class="credito">${CREDITOS[fonte] ?? ''}</p>`);
+  // As fontes ficam no painel ⓘ; aqui só o aviso quando a tradução não é a litúrgica
+  if (fonte === 'evangelizo') {
+    partes.push('<p class="credito">Fonte principal indisponível: texto da fonte reserva, em tradução que pode diferir da litúrgica.</p>');
+  }
   return partes.join('');
 }
 

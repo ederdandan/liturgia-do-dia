@@ -24,9 +24,7 @@ export function renderCatena(resultados) {
       Comentários dos Padres da Igreja reunidos por São Tomás sobre o Evangelho do dia. ${aviso}
     </p>
     ${validos.map(blocoEvangelho).join('')}
-    <p class="credito">${escaparHtml(validos[0].fonte)}${validos[0].link
-      ? ` <a href="${escaparHtml(validos[0].link)}" target="_blank" rel="noopener">Ler no site do projeto</a>.`
-      : ''}</p>`;
+    ${validos[0].link ? `<p class="credito"><a href="${escaparHtml(validos[0].link)}" target="_blank" rel="noopener">Ler este capítulo no site do projeto</a></p>` : ''}`;
 }
 
 function blocoEvangelho(r) {

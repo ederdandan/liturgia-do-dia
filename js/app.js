@@ -1,7 +1,8 @@
 // Ponto de entrada: estado da data (no hash da URL), carregamento dos blocos e renderização.
 
 import { getLiturgia, getSanto, getReflexao } from './apiService.js';
-import { iniciarControles, skeletonBloco, carregandoHtml, erroHtml, selecionarAba } from './uiService.js';
+import { iniciarControles, iniciarPainelFontes, skeletonBloco, carregandoHtml, erroHtml, selecionarAba } from './uiService.js';
+import { renderFontes } from './views/fontes.js';
 import { listarSalvos, alternarSalvo, removerSalvo } from './salvosService.js';
 import { renderSalvos } from './views/salvos.js';
 import { iniciarInstalacao } from './installService.js';
@@ -20,6 +21,7 @@ const NOMES_COR = { verde: 'verde', branco: 'branco', vermelho: 'vermelho', roxo
 
 let dataAtual = null;
 let geracao = 0; // descarta respostas de datas que já não estão na tela
+let fontesDia = {}; // fontes usadas na data aberta (painel ⓘ)
 
 // ---------------------------------------------------------------------------
 // Data e roteamento (#AAAA-MM-DD)
@@ -45,6 +47,7 @@ function aoMudarHash() {
 
 async function carregar(data) {
   dataAtual = data;
+  fontesDia = {};
   const minhaGeracao = ++geracao;
   const atual = () => minhaGeracao === geracao;
 
@@ -78,7 +81,10 @@ async function carregar(data) {
       .filter((l) => l.tipo === 'evangelho')
       .map((l) => getCatena(l.referencia))))
     .then((resultados) => {
-      if (atual()) el('painel-catena').innerHTML = renderCatena(resultados);
+      if (!atual()) return;
+      const r = resultados.find((x) => x?.grupos.length);
+      if (r) fontesDia.catena = { idioma: r.idioma, link: r.link };
+      el('painel-catena').innerHTML = renderCatena(resultados);
     })
     .catch((e) => {
       if (!atual()) return;
@@ -92,7 +98,9 @@ async function carregar(data) {
       .filter((l) => l.tipo === 'evangelho')
       .map((l) => getCatecismo(l.referencia))))
     .then((resultados) => {
-      if (atual()) el('painel-catecismo').innerHTML = renderCatecismo(resultados);
+      if (!atual()) return;
+      fontesDia.catecismo = resultados.some((x) => x?.paragrafos.length);
+      el('painel-catecismo').innerHTML = renderCatecismo(resultados);
     })
     .catch((e) => {
       if (!atual()) return;
@@ -102,7 +110,9 @@ async function carregar(data) {
 
   reflexaoP
     .then((res) => {
-      if (atual()) el('painel-reflexao').innerHTML = renderReflexao(res);
+      if (!atual()) return;
+      fontesDia.reflexao = res.fonte;
+      el('painel-reflexao').innerHTML = renderReflexao(res);
     })
     .catch((e) => {
       if (!atual()) return;
@@ -114,6 +124,7 @@ async function carregar(data) {
     .then((res) => {
       if (!atual()) return;
       renderCabecalho(res.dados);
+      fontesDia.liturgia = res.fonte;
       el('painel-liturgia').innerHTML = renderLiturgia(res, data);
     })
     .catch((e) => {
@@ -130,6 +141,7 @@ async function carregar(data) {
     .then(async (res) => {
       const liturgia = await liturgiaP.then((r) => r.dados).catch(() => null);
       if (!atual()) return;
+      Object.assign(fontesDia, { santo: res.fonte, santoWiki: res.dados.wiki ?? null, santoBio: res.dados.bioFonte || '' });
       el('painel-santo').innerHTML = renderSanto(res, liturgia);
     })
     .catch((e) => {
@@ -241,6 +253,7 @@ function abrirAbaDaUrl() {
 }
 
 iniciarControles();
+iniciarPainelFontes(() => renderFontes(fontesDia));
 iniciarEventos();
 renderPainelSalvos();
 abrirAbaDaUrl();

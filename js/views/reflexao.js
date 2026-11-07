@@ -18,9 +18,7 @@ export function renderReflexao({ dados: r, fonte }) {
 
       <div class="prosa mt-6">${comentario ? textoParaHtml(r.texto) : meditacaoHtml(r.texto)}</div>
 
-      <p class="credito">${fonte === 'evangelizo'
-        ? 'Fonte: <a href="https://evangelizo.org" target="_blank" rel="noopener">Evangelizo.org</a> · tradução portuguesa'
-        : 'O comentário do dia está indisponível; esta meditação reúne as antífonas e a oração da liturgia.'}</p>
+      ${fonte === 'evangelizo' ? '' : '<p class="credito">O comentário do dia está indisponível; esta meditação reúne as antífonas e a oração da liturgia.</p>'}
     </article>`;
 }
 

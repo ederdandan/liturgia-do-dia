@@ -103,6 +103,76 @@ export function iniciarAbas() {
   selecionar(salva ?? abas[0]);
 }
 
+// Deslizar para trocar de aba (só no celular) -------------------------------
+
+const CELULAR = '(max-width: 767px)';
+
+/** Elemento (ou ancestral) que rola na horizontal: o gesto é dele, não da troca de aba. */
+function rolaDeLado(el) {
+  for (; el && el !== document.body; el = el.parentElement) {
+    if (el.scrollWidth > el.clientWidth + 1 && /auto|scroll/.test(getComputedStyle(el).overflowX)) return true;
+  }
+  return false;
+}
+
+function iniciarDeslize() {
+  const area = document.getElementById('conteudo');
+  let inicio = null;
+
+  area.addEventListener('touchstart', (e) => {
+    inicio = null;
+    if (!matchMedia(CELULAR).matches || e.touches.length !== 1) return;
+    const t = e.touches[0];
+    // Bordas da tela: gesto de "voltar" do sistema (Android/iPhone)
+    if (t.clientX < 24 || t.clientX > innerWidth - 24) return;
+    if (e.target.closest('input, textarea, select, [contenteditable], details, .sem-deslize') || rolaDeLado(e.target)) return;
+    inicio = { x: t.clientX, y: t.clientY, tempo: Date.now() };
+  }, { passive: true });
+
+  area.addEventListener('touchend', (e) => {
+    if (!inicio) return;
+    const t = e.changedTouches[0];
+    const dx = t.clientX - inicio.x;
+    const dy = t.clientY - inicio.y;
+    const rapido = Date.now() - inicio.tempo < 700;
+    inicio = null;
+    if (!rapido || Math.abs(dx) < 60 || Math.abs(dx) < Math.abs(dy) * 1.5) return;
+    if (String(getSelection?.() ?? '').length) return; // selecionando texto
+
+    const abas = [...document.querySelectorAll('[role="tab"]')];
+    const i = abas.findIndex((a) => a.getAttribute('aria-selected') === 'true');
+    const destino = abas[i + (dx < 0 ? 1 : -1)];
+    if (!destino) return; // já na primeira/última aba
+    destino.click(); // seleciona e volta ao topo, como o toque na barra
+    const painel = document.getElementById(destino.getAttribute('aria-controls'));
+    painel.classList.remove('entrar-dir', 'entrar-esq');
+    void painel.offsetWidth; // reinicia a animação
+    painel.classList.add(dx < 0 ? 'entrar-dir' : 'entrar-esq');
+  }, { passive: true });
+
+  area.addEventListener('touchcancel', () => { inicio = null; }, { passive: true });
+  area.addEventListener('animationend', (e) => e.target.classList?.remove('entrar-dir', 'entrar-esq'));
+}
+
+// Painel "Fontes e créditos" ------------------------------------------------
+
+/** @param {() => string} conteudo  HTML do painel, gerado na hora de abrir (fontes do dia atual) */
+export function iniciarPainelFontes(conteudo) {
+  const dialogo = document.getElementById('dialogo-fontes');
+  const botao = document.getElementById('btn-fontes');
+  if (!dialogo?.showModal) { botao.hidden = true; return; }
+
+  botao.addEventListener('click', () => {
+    document.getElementById('fontes-conteudo').innerHTML = conteudo();
+    dialogo.showModal();
+  });
+  dialogo.addEventListener('click', (e) => {
+    // Botão fechar, ou toque no fundo escurecido (fora do conteúdo)
+    if (e.target === dialogo || e.target.closest('[data-fechar-fontes]')) dialogo.close();
+  });
+  dialogo.addEventListener('close', () => botao.focus());
+}
+
 // ---------------------------------------------------------------------------
 // Controles
 // ---------------------------------------------------------------------------
@@ -121,6 +191,7 @@ export function iniciarControles() {
   });
   iniciarMenuAjustes();
   iniciarAbas();
+  iniciarDeslize();
 }
 
 // Menu "Aa" (celular) ------------------------------------------------------

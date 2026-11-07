@@ -198,6 +198,47 @@ body {
   .instalar { left: auto; right: 1.25rem; bottom: 1.25rem; max-width: 26rem; }
 }
 
+/* ===== Painel "Fontes e créditos" ===== */
+.painel-fontes {
+  width: 100%;
+  max-width: 100%;
+  max-height: 85dvh;
+  margin: auto 0 0;
+  padding: 0;
+  border: 1px solid var(--borda);
+  border-radius: 1rem 1rem 0 0;
+  background: var(--fundo);
+  color: var(--texto);
+  box-shadow: 0 -10px 30px rgb(0 0 0 / 0.25);
+}
+.painel-fontes[open] { display: flex; flex-direction: column; animation: subir 0.22s ease-out; }
+.painel-fontes::backdrop { background: rgb(0 0 0 / 0.45); }
+.painel-fontes-topo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 0.75rem 0.75rem 1.25rem;
+  border-bottom: 1px solid var(--borda);
+}
+.painel-fontes-corpo {
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 1.25rem 1.25rem calc(1.5rem + env(safe-area-inset-bottom));
+  line-height: 1.55;
+}
+.painel-fontes a { color: var(--cor-liturgica); text-decoration: underline; text-underline-offset: 3px; }
+.selo.selo-uso { margin-left: 0.35rem; color: var(--cor-liturgica); border-color: var(--cor-liturgica); font-weight: 400; }
+@keyframes subir { from { transform: translateY(100%); } }
+@media (min-width: 768px) {
+  .painel-fontes {
+    max-width: 34rem;
+    max-height: 80vh;
+    margin: auto;
+    border-radius: 1rem;
+  }
+  .painel-fontes[open] { animation: none; }
+}
+
 /* ===== Modo foco ===== */
 .modo-foco .ocultavel { display: none; }
 .modo-foco #btn-sair-foco { display: inline-flex; }
@@ -345,7 +386,15 @@ body {
 }
 @keyframes aparecer { to { opacity: 1; } }
 
+/* Troca de aba por deslize */
+.entrar-dir { animation: entrar-dir 0.22s ease-out; }
+.entrar-esq { animation: entrar-esq 0.22s ease-out; }
+@keyframes entrar-dir { from { opacity: 0.3; transform: translateX(2.5rem); } }
+@keyframes entrar-esq { from { opacity: 0.3; transform: translateX(-2.5rem); } }
+#conteudo { overflow-x: clip; } /* a animação não cria rolagem lateral */
+
 @media (prefers-reduced-motion: reduce) {
+  .entrar-dir, .entrar-esq, .painel-fontes[open] { animation: none; }
   .skeleton { animation: none; }
   .giro { animation-duration: 2.4s; }
   .carregando-dica { animation-duration: 0s; }

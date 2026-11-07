@@ -2,8 +2,6 @@
 
 import { escaparHtml } from '../utils/sanitize.js';
 
-const URL_VATICANO = 'https://www.vatican.va/archive/cathechism_po/index_new/prima-pagina-cic_po.html';
-
 /** @param {Array} resultados lista de retornos de getCatecismo (um por Evangelho do dia) */
 export function renderCatecismo(resultados) {
   const validos = resultados.filter((r) => r?.paragrafos.length);
@@ -16,13 +14,7 @@ export function renderCatecismo(resultados) {
     <p class="mt-3 text-sm text-suave">
       Parágrafos do Catecismo que citam versículos do Evangelho do dia, na ordem dos versículos.
     </p>
-    ${validos.map(blocoEvangelho).join('')}
-    <p class="credito">
-      Texto do Catecismo da Igreja Católica (© Libreria Editrice Vaticana), via
-      <a href="https://github.com/ederdandan/catechism-cross-reference" target="_blank" rel="noopener">catechism-cross-reference</a>.
-      Só entram citações do corpo do texto, não as das notas de rodapé.
-      <a href="${URL_VATICANO}" target="_blank" rel="noopener">Ler no vatican.va</a>.
-    </p>`;
+    ${validos.map(blocoEvangelho).join('')}`;
 }
 
 function blocoEvangelho(r) {

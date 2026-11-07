@@ -107,6 +107,14 @@
           </button>
           </div>
         </div>
+
+        <!-- Fontes e créditos (abre o painel) -->
+        <button id="btn-fontes" class="btn-icone order-2" type="button" aria-haspopup="dialog" aria-controls="dialogo-fontes"
+                aria-label="Fontes e créditos" title="Fontes e créditos">
+          <svg viewBox="0 0 24 24" class="h-[1.1rem] w-[1.1rem]" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="9"/><path d="M12 11v5.5"/><path d="M12 7.6v.1"/>
+          </svg>
+        </button>
       </div>
 
       <!-- Título litúrgico e cor -->
@@ -172,6 +180,17 @@
     <section role="tabpanel" id="painel-catecismo" aria-labelledby="aba-catecismo" tabindex="0" hidden></section>
     <section role="tabpanel" id="painel-salvos" aria-labelledby="aba-salvos" tabindex="0" hidden></section>
   </main>
+
+  <!-- Painel "Fontes e créditos": folha que sobe de baixo no celular, janela central no computador -->
+  <dialog id="dialogo-fontes" class="painel-fontes" aria-labelledby="fontes-titulo">
+    <div class="painel-fontes-topo">
+      <h2 id="fontes-titulo" class="font-display text-base">Fontes e créditos</h2>
+      <button type="button" class="btn-icone" data-fechar-fontes aria-label="Fechar" title="Fechar">
+        <svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
+      </button>
+    </div>
+    <div id="fontes-conteudo" class="painel-fontes-corpo"></div>
+  </dialog>
 
   <!-- Convite para instalar o app (aparece só quando o navegador permite) -->
   <div id="aviso-instalar" class="ocultavel instalar" role="dialog" aria-labelledby="instalar-titulo" hidden>
