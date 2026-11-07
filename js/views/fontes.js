@@ -62,6 +62,13 @@ export function renderFontes(usadas = {}) {
          Só entram as citações do corpo do texto, não as das notas de rodapé.`,
         !!usadas.catecismo),
     ]],
+    ['Orações', [
+      item(link('https://liturgia.up.railway.app', 'Liturgia Diária API'),
+        'Orações e antífonas da Missa do dia, na tradução litúrgica da CNBB.',
+        usadas.liturgia === 'liturgia-api'),
+      item('Orações tradicionais e Terço',
+        'Textos nas formas tradicionais rezadas no Brasil, guardados no próprio app (funcionam sem internet).'),
+    ]],
     ['Áudio e imagens', [
       item('Voz do aparelho',
         'A leitura em voz alta usa a voz instalada no celular ou no navegador (Google, Apple ou Microsoft).'),
