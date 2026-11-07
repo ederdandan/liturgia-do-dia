@@ -251,6 +251,29 @@ body {
   vertical-align: middle;
 }
 
+/* Botão "Ouvir" de cada leitura */
+.btn-ouvir {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  height: 2.25rem;
+  padding: 0 0.7rem;
+  border: 1px solid var(--borda);
+  border-radius: 9999px;
+  font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
+  font-size: 0.75rem;
+  color: var(--suave);
+  transition: border-color 0.15s, color 0.15s;
+}
+.btn-ouvir svg { width: 1rem; height: 1rem; flex: none; }
+.btn-ouvir .icone-pausar { display: none; }
+.btn-ouvir:hover { color: var(--texto); }
+.btn-ouvir:focus-visible { outline: 2px solid var(--cor-liturgica); outline-offset: 2px; }
+.btn-ouvir[data-estado="tocando"],
+.btn-ouvir[data-estado="pausado"] { color: var(--cor-liturgica); border-color: var(--cor-liturgica); }
+.btn-ouvir[data-estado="tocando"] .icone-ouvir { display: none; }
+.btn-ouvir[data-estado="tocando"] .icone-pausar { display: block; }
+
 /* Atalhos para as leituras (topo da aba Liturgia) */
 .atalhos {
   display: flex;

@@ -3,6 +3,7 @@
 import { escaparHtml } from '../utils/sanitize.js';
 import { botaoSalvar } from './salvos.js';
 import { estaSalvo } from '../salvosService.js';
+import { audioDisponivel } from '../audioService.js';
 
 const ROTULOS = {
   primeira: 'Primeira Leitura',
@@ -27,6 +28,43 @@ const textoHtml = (t) => escaparHtml(t).replace(/\n/g, '<br>');
 
 let ctx = { data: '', tituloDia: '' }; // contexto da renderização atual
 
+// Texto falado de cada leitura na tela, pelo id do <article>
+const textosAudio = new Map();
+export const textoParaOuvir = (id) => textosAudio.get(id) ?? '';
+
+const ICONE_OUVIR = `
+  <svg class="icone-ouvir" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z"/><path d="M15.5 9a4 4 0 0 1 0 6"/><path d="M18 6.5a7.5 7.5 0 0 1 0 11"/>
+  </svg>
+  <svg class="icone-pausar" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+    <rect x="6.5" y="5" width="3.8" height="14" rx="1"/><rect x="13.7" y="5" width="3.8" height="14" rx="1"/>
+  </svg>`;
+
+function botaoOuvir(id, rotulo) {
+  if (!audioDisponivel()) return '';
+  return `
+    <button type="button" class="btn-ouvir" data-acao="ouvir" data-alvo="${id}" data-estado="parado"
+            aria-pressed="false" aria-label="Ouvir ${escaparHtml(rotulo)}" title="Ouvir">
+      ${ICONE_OUVIR}<span class="btn-ouvir-texto">Ouvir</span>
+    </button>`;
+}
+
+/** Texto para a voz: rótulo, título ("Leitura do livro…"), corpo e aclamação final. */
+function textoFalado(leitura) {
+  // Termina a frase com um único ponto (evita "Senhor.." e pausas estranhas)
+  const ponto = (t) => `${String(t).trim().replace(/[.!?;:,]+$/, '')}.`;
+  const corpo = leitura.versiculos.map((v) => v.texto).join(' ');
+  if (leitura.tipo === 'salmo') {
+    const refrao = leitura.refrao ? ponto(leitura.refrao) : '';
+    const r = refrao ? ` Refrão: ${refrao}` : '';
+    const estrofes = leitura.versiculos.map((v) => `${ponto(v.texto)}${refrao ? ` ${refrao}` : ''}`).join(' ');
+    return `${ROTULOS.salmo}.${r} ${estrofes}`;
+  }
+  const titulo = leitura.titulo ? ` ${ponto(leitura.titulo)}` : '';
+  const fim = leitura.tipo === 'evangelho' ? 'Palavra da Salvação.' : 'Palavra do Senhor.';
+  return `${ROTULOS[leitura.tipo]}.${titulo} ${corpo} ${fim}`;
+}
+
 function itemSalvavel(leitura, opcao) {
   const id = `${ctx.data}:${leitura.tipo}:${leitura.referencia}`;
   const texto = leitura.versiculos.map((v) => v.texto).join(' ');
@@ -49,6 +87,7 @@ export function renderLiturgia({ dados, fonte }, data) {
   const partes = [];
   ctx = { data, tituloDia: dados.titulo };
   const leituras = dados.leituras.filter((l) => ROTULOS[l.tipo]);
+  textosAudio.clear();
 
   // Conta repetições de tipo (ex.: dois Evangelhos no Domingo de Páscoa)
   const totais = {};
@@ -57,8 +96,9 @@ export function renderLiturgia({ dados, fonte }, data) {
   for (const leitura of leituras) {
     vistos[leitura.tipo] = (vistos[leitura.tipo] ?? 0) + 1;
     const opcao = totais[leitura.tipo] > 1 ? (leitura.forma || `opção ${vistos[leitura.tipo]}`) : leitura.forma;
-    // Âncora só na primeira ocorrência de cada tipo (é para lá que o atalho leva)
-    const ancora = vistos[leitura.tipo] === 1 ? `leitura-${leitura.tipo}` : '';
+    // A primeira ocorrência de cada tipo tem o id simples (é para lá que o atalho leva)
+    const ancora = vistos[leitura.tipo] === 1 ? `leitura-${leitura.tipo}` : `leitura-${leitura.tipo}-${vistos[leitura.tipo]}`;
+    textosAudio.set(ancora, textoFalado(leitura));
     partes.push(leitura.tipo === 'salmo' ? blocoSalmo(leitura, opcao, ancora) : blocoLeitura(leitura, opcao, ancora));
   }
 
@@ -77,12 +117,15 @@ function atalhos(leituras) {
     </nav>`;
 }
 
-function cabecalho(leitura, opcao) {
+function cabecalho(leitura, opcao, ancora) {
   const item = itemSalvavel(leitura, opcao);
   return `
     <div class="flex items-center justify-between gap-2">
       <p class="rotulo">${ROTULOS[leitura.tipo]}${opcao ? ` <span class="selo ml-1 normal-case tracking-normal">${escaparHtml(opcao)}</span>` : ''}</p>
-      ${botaoSalvar(item, estaSalvo(item.id))}
+      <div class="flex flex-none items-center gap-1">
+        ${botaoOuvir(ancora, ROTULOS[leitura.tipo])}
+        ${botaoSalvar(item, estaSalvo(item.id))}
+      </div>
     </div>
     <h2 class="mt-2 font-bold text-liturgica">${escaparHtml(leitura.referencia)}</h2>
     ${leitura.titulo && leitura.tipo !== 'salmo' ? `<p class="mt-1 text-sm italic text-suave">${escaparHtml(leitura.titulo)}</p>` : ''}
@@ -94,8 +137,8 @@ function blocoLeitura(leitura, opcao, ancora) {
     .map((v) => `${v.n ? `<sup>${v.n}</sup>` : ''}${textoHtml(v.texto)}`)
     .join(' ');
   return `
-    <article class="bloco"${ancora ? ` id="${ancora}"` : ''}>
-      ${cabecalho(leitura, opcao)}
+    <article class="bloco" id="${ancora}">
+      ${cabecalho(leitura, opcao, ancora)}
       <p class="mt-5">${corpo}</p>
       ${leitura.tipo === 'evangelho'
         ? '<p class="mt-5 text-sm italic text-suave">— Palavra da Salvação. — Glória a vós, Senhor.</p>'
@@ -111,8 +154,8 @@ function blocoSalmo(leitura, opcao, ancora) {
     .map((v) => `<p>${v.n ? `<sup>${v.n}</sup>` : ''}${textoHtml(v.texto)}</p>`)
     .join('');
   return `
-    <article class="bloco"${ancora ? ` id="${ancora}"` : ''}>
-      ${cabecalho(leitura, opcao)}
+    <article class="bloco" id="${ancora}">
+      ${cabecalho(leitura, opcao, ancora)}
       ${refrao}
       <div class="mt-5 space-y-4">${estrofes}</div>
     </article>`;

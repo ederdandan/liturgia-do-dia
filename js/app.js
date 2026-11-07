@@ -5,7 +5,8 @@ import { iniciarControles, skeletonBloco, carregandoHtml, erroHtml, selecionarAb
 import { listarSalvos, alternarSalvo, removerSalvo } from './salvosService.js';
 import { renderSalvos } from './views/salvos.js';
 import { iniciarInstalacao } from './installService.js';
-import { renderLiturgia } from './views/liturgia.js';
+import { renderLiturgia, textoParaOuvir } from './views/liturgia.js';
+import { alternarAudio, pararAudio } from './audioService.js';
 import { renderSanto, IMAGEM_PADRAO } from './views/santo.js';
 import { renderReflexao } from './views/reflexao.js';
 import { getCatena } from './catenaService.js';
@@ -56,6 +57,7 @@ async function carregar(data) {
   el('cor-nome').textContent = '';
   delete document.documentElement.dataset.cor;
 
+  pararAudio(); // a leitura em voz alta é da data anterior
   el('painel-liturgia').innerHTML = skeletonBloco(3);
   el('painel-santo').innerHTML = `<div class="skeleton h-72 w-full rounded-lg"></div><div class="mt-6">${skeletonBloco(1)}</div>`;
 
@@ -182,6 +184,18 @@ function iniciarEventos() {
       for (const b of document.querySelectorAll('[data-acao="salvar"][aria-pressed="true"]')) {
         if (JSON.parse(b.dataset.salvar).id === btnRemover.dataset.id) b.setAttribute('aria-pressed', 'false');
       }
+    }
+
+    // Ouvir / pausar uma leitura
+    const btnOuvir = e.target.closest('[data-acao="ouvir"]');
+    if (btnOuvir) {
+      alternarAudio(btnOuvir.dataset.alvo, textoParaOuvir(btnOuvir.dataset.alvo), (estado) => {
+        btnOuvir.dataset.estado = estado;
+        btnOuvir.setAttribute('aria-pressed', String(estado === 'tocando'));
+        btnOuvir.querySelector('.btn-ouvir-texto').textContent =
+          estado === 'tocando' ? 'Pausar' : estado === 'pausado' ? 'Continuar' : 'Ouvir';
+        btnOuvir.title = estado === 'tocando' ? 'Pausar' : 'Ouvir';
+      });
     }
 
     // Atalhos da aba Liturgia: rola até a leitura (sem mexer no #data da URL)
