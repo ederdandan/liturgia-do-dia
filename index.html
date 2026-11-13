@@ -17,6 +17,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-title" content="Liturgia">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <script src="versao.js"></script>
 
   <!-- Aplica tema e fonte salvos antes da renderização para evitar flash -->
   <script>
@@ -123,6 +124,13 @@
               </svg>
               <span class="flex-1">Modo foco</span>
               <span class="hidden md:inline text-xs text-suave">Esc sai</span>
+            </button>
+            <button id="btn-auto-atualizar" class="menu-item" type="button" role="menuitemcheckbox" aria-checked="true">
+              <svg viewBox="0 0 24 24" class="menu-icone" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M20 12a8 8 0 1 1-2.35-5.65M20 4v4.5h-4.5"/>
+              </svg>
+              <span class="flex-1">Atualizar sozinho</span>
+              <span id="auto-atualizar-estado" class="text-xs text-suave"></span>
             </button>
             <hr class="menu-divisor">
             <button id="btn-fontes" class="menu-item" type="button" role="menuitem" aria-haspopup="dialog" aria-controls="dialogo-fontes">
@@ -238,6 +246,18 @@
     </button>
   </div>
 
+  <!-- Nova versão disponível (quando "Atualizar sozinho" está desligado) -->
+  <div id="aviso-atualizar" class="ocultavel instalar" role="status" hidden>
+    <div class="min-w-0 flex-1">
+      <p class="text-sm font-bold">Nova versão disponível</p>
+      <p class="text-xs text-suave">Toque em Atualizar para usar a versão mais recente.</p>
+    </div>
+    <button id="btn-atualizar-agora" type="button" class="flex-none rounded-full bg-liturgica px-4 py-2 text-xs font-bold text-fundo">Atualizar</button>
+    <button id="btn-atualizar-fechar" type="button" class="btn-icone flex-none" aria-label="Depois" title="Depois">
+      <svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
+    </button>
+  </div>
+
   <!-- Saída do modo foco -->
   <button id="btn-sair-foco" type="button" class="btn-icone fixed bottom-4 right-4 hidden shadow" aria-label="Sair do modo foco" title="Sair do modo foco (Esc)">
     <svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
@@ -247,6 +267,7 @@
 
   <footer class="ocultavel mx-auto max-w-3xl px-4 pt-8 pb-28 md:pb-8 text-xs text-suave">
     Uso pessoal e não comercial. Fontes: Liturgia Diária API (CNBB), Evangelizo.org, Wikipedia, Commentaries-Database.
+    <p id="versao-app" class="mt-2"></p>
   </footer>
 
   <script type="module" src="js/app.js"></script>

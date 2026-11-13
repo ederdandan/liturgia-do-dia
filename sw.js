@@ -1,4 +1,5 @@
 // Service worker: permite abrir o app sem internet.
+// - A versão vem de versao.js; mudar esse arquivo faz o navegador baixar a nova versão.
 // - Arquivos do app: rede primeiro (atualizações aparecem logo), cache se offline.
 // - Catena Aurea (data/catena): cache primeiro (dados estáticos).
 // - Catena em português e Catecismo (GitHub): cache, atualizando em segundo plano.
@@ -6,7 +7,8 @@
 // - Imagens (santos): cache primeiro, até 80 imagens.
 // - APIs (liturgia, Evangelizo, Wikipedia): não interceptadas; o app já guarda as respostas no localStorage.
 
-const VERSAO = 'v9';
+importScripts('versao.js');
+const VERSAO = self.APP_VERSAO;
 const CACHE_APP = `app-${VERSAO}`;
 const CACHE_DADOS = `dados-${VERSAO}`;
 const CACHE_IMAGENS = `imagens-${VERSAO}`;
@@ -43,6 +45,8 @@ const ARQUIVOS_APP = [
   'js/views/ouvir.js',
   'data/oracoes.json',
   'js/installService.js',
+  'js/updateService.js',
+  'versao.js',
   'manifest.webmanifest',
   'assets/default-saint.jpg',
   'assets/icons/icon.svg',
@@ -56,7 +60,12 @@ const ARQUIVOS_APP = [
 const CDNS = ['cdn.tailwindcss.com', 'fonts.googleapis.com', 'fonts.gstatic.com'];
 
 self.addEventListener('install', (e) => {
-  e.waitUntil(caches.open(CACHE_APP).then((c) => c.addAll(ARQUIVOS_APP)).then(() => self.skipWaiting()));
+  e.waitUntil(caches.open(CACHE_APP).then((c) => c.addAll(ARQUIVOS_APP)));
+});
+
+// A nova versão espera a página pedir (atualização automática ou botão "Atualizar")
+self.addEventListener('message', (e) => {
+  if (e.data?.tipo === 'ativar') self.skipWaiting();
 });
 
 self.addEventListener('activate', (e) => {
