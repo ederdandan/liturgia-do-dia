@@ -91,20 +91,25 @@
       "oracoes": [
         {
           "id": "oracao-da-manha",
-          "titulo": "Oração da manhã",
-          "nota": "Ao levantar.",
-          "texto": "Meu Deus, eu vos adoro e vos amo de todo o coração. Agradeço-vos por me terdes criado, feito cristão e guardado durante esta noite.\nOfereço-vos tudo o que eu fizer neste dia: fazei que seja segundo a vossa santa vontade e para a vossa maior glória. Livrai-me do pecado e de todo mal, e que a vossa graça esteja sempre comigo e com todos os que me são queridos. Amém."
+          "titulo": "Oração da manhã — Oferecimento I",
+          "texto": "Meu Senhor e meu Deus, humildemente Vos adoro em união com todos os anjos e santos. Eu Vos dou graças pelo Vosso infinito amor, particularmente por me haverdes conservado com tanta bondade e misericórdia até hoje.\nOfereço-vos as ações deste dia: fazei que sejam todas segundo a Vossa santa vontade e peço-vos que neste dia me preserveis do pecado e me livreis de todo o mal. Que a graça do Senhor, nosso Deus, resplandeça a nossos olhos. Inspirai, lá do Vosso trono, as nossas obras, assim como o trabalho das nossas mãos."
+        },
+        {
+          "id": "oferecimento-manha-2",
+          "titulo": "Oração da manhã — Oferecimento II",
+          "texto": "Inspirai, Senhor, as nossas ações, e ajudai-nos a realizá-las, para que em Vós comece e para Vós termine tudo aquilo que fizermos. Por Cristo, Senhor nosso. Amém.\nEm latim: Actiones nostras, quaesumus, Domine, aspirando praeveni et adiuvando prosequere: ut cuncta nostra oratio et operatio a te semper incipiat, et per te coepta finiatur. Per Christum Dominum nostrum. Amen."
+        },
+        {
+          "id": "consagracao-do-dia",
+          "titulo": "Oração da manhã — Consagração do dia",
+          "nota": "Em seguida, reza-se o Pai-Nosso, a Ave-Maria e o Glória.",
+          "texto": "Senhor Deus, Rei do Céu e da Terra, dignai-vos dirigir e santificar, mandar e governar os nossos corações e os nossos corpos, os nossos pensamentos, as nossas palavras e as nossas ações, segundo a Vossa lei e no cumprimento dos Vossos Mandamentos, a fim de que aqui e eternamente com Vosso auxílio mereçamos alcançar a salvação e a liberdade, ó Salvador do mundo, que viveis e reinais por todos os séculos dos séculos. Amém."
         },
         {
           "id": "oferecimento-do-dia",
           "titulo": "Oferecimento do dia",
           "nota": "Oração do Apostolado da Oração, para o começo do dia.",
           "texto": "Ofereço-vos, ó meu Deus, em união com o Santíssimo Coração de Jesus, por meio do Coração Imaculado de Maria, as orações, obras, sofrimentos e alegrias deste dia, em reparação de nossas ofensas e por todas as intenções pelas quais o Divino Coração está continuamente intercedendo em nosso favor.\nEu vo-las ofereço, em particular, pelas intenções do Santo Padre, o Papa. Amém."
-        },
-        {
-          "id": "consagracao-do-dia",
-          "titulo": "Consagração do dia",
-          "texto": "Sagrado Coração de Jesus, eu vos consagro este dia: meus pensamentos, palavras e ações, minhas alegrias e sofrimentos. Guardai-me no vosso amor, livrai-me do pecado e fazei que em tudo eu cumpra a vossa vontade.\nImaculado Coração de Maria, sede o meu refúgio e a minha proteção neste dia. Amém."
         },
         {
           "id": "oracao-da-noite",
