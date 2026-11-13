@@ -6,6 +6,7 @@ import { renderFontes } from './views/fontes.js';
 import { listarSalvos, alternarSalvo, removerSalvo } from './salvosService.js';
 import { renderSalvos } from './views/salvos.js';
 import { iniciarInstalacao } from './installService.js';
+import { iniciarAtualizacoes } from './updateService.js';
 import { renderLiturgia, textoParaOuvir } from './views/liturgia.js';
 import { alternarAudio, pararAudio } from './audioService.js';
 import { renderSanto, IMAGEM_PADRAO } from './views/santo.js';
@@ -298,12 +299,6 @@ function abrirOracao(id) {
   det.classList.add('destaque');
 }
 
-// Uso offline: o service worker só funciona via http(s), não em file://
-function registrarServiceWorker() {
-  if (!('serviceWorker' in navigator) || location.protocol === 'file:') return;
-  navigator.serviceWorker.register('sw.js').catch((e) => console.warn('Service worker não registrado', e));
-}
-
 // Atalhos do ícone instalado (manifest "shortcuts"): ?aba=santo, ?aba=salvos...
 function abrirAbaDaUrl() {
   const aba = new URLSearchParams(location.search).get('aba');
@@ -318,5 +313,5 @@ iniciarEventos();
 carregarOracoes();
 abrirAbaDaUrl();
 aoMudarHash();
-registrarServiceWorker();
+iniciarAtualizacoes();
 iniciarInstalacao();

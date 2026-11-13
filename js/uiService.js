@@ -214,7 +214,7 @@ export function iniciarControles() {
 function iniciarMenuMais() {
   const botao = document.getElementById('btn-mais');
   const menu = document.getElementById('menu-mais');
-  const itens = () => [...menu.querySelectorAll('[role="menuitem"]:not(:disabled)')];
+  const itens = () => [...menu.querySelectorAll('[role="menuitem"]:not(:disabled), [role="menuitemcheckbox"]')];
 
   const fechar = (devolverFoco = false) => {
     if (menu.hidden) return;

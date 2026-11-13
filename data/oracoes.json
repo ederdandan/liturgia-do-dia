@@ -54,6 +54,80 @@
           "id": "ato-de-contricao",
           "titulo": "Ato de Contrição",
           "texto": "Senhor meu Jesus Cristo, Deus e Homem verdadeiro, Criador e Redentor meu, por serdes vós quem sois, sumamente bom e digno de ser amado sobre todas as coisas, e porque vos amo e estimo, pesa-me, Senhor, de todo o meu coração, de vos ter ofendido; pesa-me também por ter perdido o céu e merecido o inferno.\nE proponho firmemente, ajudado com os auxílios da vossa divina graça, emendar-me e nunca mais vos tornar a ofender, e espero alcançar o perdão de minhas culpas pela vossa infinita misericórdia. Amém."
+        },
+        {
+          "id": "atos-de-fe-esperanca-caridade",
+          "titulo": "Atos de Fé, Esperança e Caridade",
+          "texto": "Ato de Fé: Eu creio firmemente que há um só Deus em três pessoas realmente distintas, Pai, Filho e Espírito Santo. Creio que o Filho de Deus se fez homem, padeceu e morreu na cruz para nos salvar, e ao terceiro dia ressuscitou. Creio em tudo o mais que crê e ensina a Santa Igreja Católica, porque Deus o revelou, e ele não pode enganar-se nem enganar-nos.\nAto de Esperança: Eu espero, meu Deus, com firme confiança, que, pelos merecimentos de meu Senhor Jesus Cristo, me dareis a salvação eterna e as graças necessárias para alcançá-la, porque vós, sumamente bom e poderoso, o prometestes a quem observar fielmente os vossos mandamentos, como eu proponho fazer com o vosso auxílio.\nAto de Caridade: Eu vos amo, meu Deus, de todo o meu coração e sobre todas as coisas, porque sois infinitamente bom e amável; e antes quero perder tudo do que vos ofender. Por amor de vós, amo o meu próximo como a mim mesmo."
+        },
+        {
+          "id": "oracao-do-anjo-de-fatima",
+          "titulo": "Oração do Anjo (Fátima)",
+          "nota": "Ensinada pelo Anjo aos pastorinhos de Fátima, em 1916.",
+          "texto": "Meu Deus, eu creio, adoro, espero e amo-vos.\nPeço-vos perdão pelos que não creem, não adoram, não esperam e não vos amam."
+        },
+        {
+          "id": "bencao-da-mesa",
+          "titulo": "Bênção da mesa",
+          "texto": "Antes da refeição: Abençoai-nos, Senhor, e a estes alimentos que vamos tomar da vossa bondade. Por Cristo, nosso Senhor. Amém.\nDepois da refeição: Nós vos damos graças, Deus todo-poderoso, por todos os vossos benefícios. Vós que viveis e reinais para sempre. Amém."
+        },
+        {
+          "id": "eterno-descanso",
+          "titulo": "Pelos fiéis defuntos",
+          "nota": "Para rezar pelos falecidos.",
+          "texto": "Dai-lhes, Senhor, o descanso eterno, e brilhe para eles a vossa luz.\nDescansem em paz. Amém."
+        },
+        {
+          "id": "comunhao-espiritual",
+          "titulo": "Comunhão espiritual",
+          "nota": "De Santo Afonso Maria de Ligório, para quando não se pode comungar.",
+          "texto": "Meu Jesus, eu creio que estais presente no Santíssimo Sacramento. Amo-vos sobre todas as coisas e desejo receber-vos em minha alma.\nJá que agora não posso receber-vos sacramentalmente, vinde ao menos espiritualmente ao meu coração.\nComo se já vos tivesse recebido, eu vos abraço e me uno inteiramente a vós. Não permitais que jamais me separe de vós. Amém."
+        }
+      ]
+    },
+    {
+      "id": "manha-noite",
+      "nome": "Manhã e noite",
+      "oracoes": [
+        {
+          "id": "oracao-da-manha",
+          "titulo": "Oração da manhã",
+          "nota": "Ao levantar.",
+          "texto": "Meu Deus, eu vos adoro e vos amo de todo o coração. Agradeço-vos por me terdes criado, feito cristão e guardado durante esta noite.\nOfereço-vos tudo o que eu fizer neste dia: fazei que seja segundo a vossa santa vontade e para a vossa maior glória. Livrai-me do pecado e de todo mal, e que a vossa graça esteja sempre comigo e com todos os que me são queridos. Amém."
+        },
+        {
+          "id": "oferecimento-do-dia",
+          "titulo": "Oferecimento do dia",
+          "nota": "Oração do Apostolado da Oração, para o começo do dia.",
+          "texto": "Ofereço-vos, ó meu Deus, em união com o Santíssimo Coração de Jesus, por meio do Coração Imaculado de Maria, as orações, obras, sofrimentos e alegrias deste dia, em reparação de nossas ofensas e por todas as intenções pelas quais o Divino Coração está continuamente intercedendo em nosso favor.\nEu vo-las ofereço, em particular, pelas intenções do Santo Padre, o Papa. Amém."
+        },
+        {
+          "id": "consagracao-do-dia",
+          "titulo": "Consagração do dia",
+          "texto": "Sagrado Coração de Jesus, eu vos consagro este dia: meus pensamentos, palavras e ações, minhas alegrias e sofrimentos. Guardai-me no vosso amor, livrai-me do pecado e fazei que em tudo eu cumpra a vossa vontade.\nImaculado Coração de Maria, sede o meu refúgio e a minha proteção neste dia. Amém."
+        },
+        {
+          "id": "oracao-da-noite",
+          "titulo": "Oração da noite",
+          "nota": "Antes de dormir.",
+          "texto": "Meu Deus, eu vos adoro e vos agradeço por todos os benefícios que me concedestes neste dia.\nPeço-vos perdão de todas as faltas que cometi; delas me arrependo de todo o coração, porque vos ofendi, a vós que sois tão bom, e proponho, com a vossa graça, não tornar a pecar.\nGuardai-me durante esta noite; que a Virgem Maria, São José e o meu Anjo da Guarda velem por mim. Nas vossas mãos, Senhor, entrego o meu espírito. Amém."
+        },
+        {
+          "id": "exame-de-consciencia",
+          "titulo": "Exame de consciência",
+          "nota": "Um breve roteiro para o fim do dia.",
+          "texto": "1. Agradecer: pelo que recebi de Deus hoje.\n2. Pedir luz: Espírito Santo, mostrai-me o meu dia como vós o vedes.\n3. Rever o dia: em pensamentos, palavras, ações e omissões; com Deus, com o próximo e comigo mesmo.\n4. Pedir perdão: rezar o Ato de Contrição.\n5. Propor: com a graça de Deus, o que farei melhor amanhã."
+        },
+        {
+          "id": "visitai-senhor",
+          "titulo": "Visitai, Senhor, esta casa",
+          "nota": "Oração das Completas, a oração da Igreja antes do repouso noturno.",
+          "texto": "Visitai, Senhor, esta casa e afastai dela todas as ciladas do inimigo. Habitem nela os vossos santos anjos, que nos guardem em paz, e a vossa bênção permaneça sempre sobre nós. Por Cristo, nosso Senhor. Amém."
+        },
+        {
+          "id": "jesus-maria-jose",
+          "titulo": "Jesus, Maria e José",
+          "texto": "Jesus, Maria e José, eu vos dou o meu coração e a minha alma.\nJesus, Maria e José, assisti-me na última agonia.\nJesus, Maria e José, expire em paz entre vós a minha alma."
         }
       ]
     },
@@ -87,6 +161,47 @@
           "id": "a-vossa-protecao",
           "titulo": "À vossa proteção",
           "texto": "À vossa proteção recorremos, santa Mãe de Deus; não desprezeis as nossas súplicas em nossas necessidades, mas livrai-nos sempre de todos os perigos, ó Virgem gloriosa e bendita. Amém."
+        },
+        {
+          "id": "consagracao-a-nossa-senhora",
+          "titulo": "Consagração a Nossa Senhora",
+          "texto": "Ó Senhora minha, ó minha Mãe, eu me ofereço todo a vós, e em prova da minha devoção para convosco, vos consagro neste dia os meus olhos, os meus ouvidos, a minha boca, o meu coração e inteiramente todo o meu ser.\nE porque assim sou vosso, ó incomparável Mãe, guardai-me e defendei-me como coisa e propriedade vossa. Amém."
+        },
+        {
+          "id": "magnificat",
+          "titulo": "Magnificat",
+          "nota": "O cântico de Maria (Lc 1,46-55).",
+          "texto": "A minha alma engrandece o Senhor, e o meu espírito exulta em Deus, meu Salvador, porque olhou para a humildade de sua serva. Doravante todas as gerações me chamarão bem-aventurada, porque o Todo-poderoso fez em mim maravilhas, e santo é o seu nome.\nSua misericórdia se estende, de geração em geração, sobre aqueles que o temem. Manifestou o poder do seu braço: dispersou os soberbos, derrubou do trono os poderosos e exaltou os humildes; encheu de bens os famintos e despediu os ricos de mãos vazias.\nAcolheu Israel, seu servo, lembrado de sua misericórdia, conforme prometera a nossos pais, em favor de Abraão e de sua descendência, para sempre.\nGlória ao Pai, e ao Filho, e ao Espírito Santo. Como era no princípio, agora e sempre. Amém."
+        }
+      ]
+    },
+    {
+      "id": "santos",
+      "nome": "Orações aos santos e anjos",
+      "oracoes": [
+        {
+          "id": "sao-miguel",
+          "titulo": "Oração a São Miguel Arcanjo",
+          "nota": "Composta pelo Papa Leão XIII.",
+          "texto": "São Miguel Arcanjo, defendei-nos no combate; sede o nosso refúgio contra as maldades e ciladas do demônio.\nOrdene-lhe Deus, instantemente o pedimos; e vós, Príncipe da milícia celeste, pela virtude divina, precipitai no inferno a Satanás e aos outros espíritos malignos que andam pelo mundo para perder as almas. Amém."
+        },
+        {
+          "id": "sao-bento",
+          "titulo": "Oração de São Bento",
+          "nota": "Inscrição da Medalha de São Bento.",
+          "texto": "A Cruz Sagrada seja a minha luz; não seja o dragão o meu guia.\nRetira-te, Satanás! Nunca me aconselhes coisas vãs. É mau o que tu me ofereces; bebe tu mesmo o teu veneno!\nRogai por nós, glorioso São Bento, para que sejamos dignos das promessas de Cristo. Amém."
+        },
+        {
+          "id": "sao-jose",
+          "titulo": "Oração a São José",
+          "nota": "Composta pelo Papa Leão XIII.",
+          "texto": "A vós, São José, recorremos em nossa tribulação e, depois de ter implorado o auxílio de vossa santíssima Esposa, cheios de confiança solicitamos também o vosso patrocínio.\nPor esse laço sagrado de caridade que vos uniu à Virgem Imaculada, Mãe de Deus, e pelo amor paternal que tivestes ao Menino Jesus, ardentemente suplicamos que lanceis um olhar benigno sobre a herança que Jesus Cristo conquistou com o seu sangue, e nos socorrais em nossas necessidades com o vosso auxílio e poder.\nProtegei, ó guarda providente da divina Família, a raça eleita de Jesus Cristo. Afastai para longe de nós, ó pai amantíssimo, a peste do erro e do vício. Assisti-nos do alto do céu, ó nosso fortíssimo sustentáculo, na luta contra o poder das trevas; e assim como outrora salvastes da morte a vida ameaçada do Menino Jesus, assim também defendei agora a santa Igreja de Deus contra as ciladas de seus inimigos e contra toda adversidade.\nAmparai a cada um de nós com o vosso constante patrocínio, a fim de que, a vosso exemplo e sustentados com o vosso auxílio, possamos viver virtuosamente, piedosamente morrer e obter no céu a eterna bem-aventurança. Amém."
+        },
+        {
+          "id": "sao-francisco",
+          "titulo": "Oração de São Francisco",
+          "nota": "Oração pela paz, tradicionalmente atribuída a São Francisco de Assis.",
+          "texto": "Senhor, fazei de mim um instrumento de vossa paz.\nOnde houver ódio, que eu leve o amor; onde houver ofensa, que eu leve o perdão; onde houver discórdia, que eu leve a união; onde houver dúvida, que eu leve a fé; onde houver erro, que eu leve a verdade; onde houver desespero, que eu leve a esperança; onde houver tristeza, que eu leve a alegria; onde houver trevas, que eu leve a luz.\nÓ Mestre, fazei que eu procure mais consolar que ser consolado; compreender que ser compreendido; amar que ser amado.\nPois é dando que se recebe, é perdoando que se é perdoado, e é morrendo que se vive para a vida eterna. Amém."
         }
       ]
     }
