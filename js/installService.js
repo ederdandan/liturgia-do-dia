@@ -3,6 +3,8 @@
 // - iPhone / iPad: não existe diálogo automático; mostra como adicionar pela tela "Compartilhar".
 // - Já instalado (modo standalone) ou convite dispensado há menos de 30 dias: não aparece.
 
+import { registrar } from './analyticsService.js';
+
 const CHAVE_DISPENSADO = 'pref:instalar-dispensado';
 const TRINTA_DIAS = 30 * 24 * 60 * 60 * 1000;
 
@@ -37,7 +39,7 @@ export function iniciarInstalacao() {
   if (jaInstalado()) return;
 
   let promptAdiado = null;
-  el('btn-instalar-fechar').addEventListener('click', dispensar);
+  el('btn-instalar-fechar').addEventListener('click', () => { dispensar(); registrar('instalar-dispensado', 'Fechou o convite de instalação'); });
 
   // Android / Chrome / Edge
   window.addEventListener('beforeinstallprompt', (e) => {
@@ -51,9 +53,10 @@ export function iniciarInstalacao() {
     promptAdiado.prompt();
     const { outcome } = await promptAdiado.userChoice;
     promptAdiado = null;
+    registrar(outcome === 'accepted' ? 'instalar-aceito' : 'instalar-recusado', 'Convite de instalação');
     if (outcome !== 'accepted') dispensar();
   });
-  window.addEventListener('appinstalled', esconder);
+  window.addEventListener('appinstalled', () => { esconder(); registrar('app-instalado', 'App instalado'); });
 
   // iPhone / iPad: instruções manuais
   if (ehIOS() && !dispensadoRecentemente()) {

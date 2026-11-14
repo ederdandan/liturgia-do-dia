@@ -75,6 +75,10 @@ export function renderFontes(usadas = {}) {
       item(link('https://commons.wikimedia.org/wiki/File:Angelico,_pala_di_fiesole,_full.jpg', 'Fra Angelico, Retábulo de Fiesole'),
         'Imagem padrão do santo (c. 1424–25), domínio público, via Wikimedia Commons.'),
     ]],
+    ['Privacidade', [
+      item(link('https://www.goatcounter.com', 'GoatCounter'),
+        'Estatísticas anônimas de uso (visitas, abas e recursos mais usados), sem cookies e sem dados pessoais. Ajudam a saber o que melhorar.'),
+    ]],
   ];
 
   return secoes.map(([titulo, itens]) => `

@@ -17,6 +17,7 @@ import { getCatecismo } from './catecismoService.js';
 import { renderCatecismo } from './views/catecismo.js';
 import { getOracoes } from './oracoesService.js';
 import { renderListaOracoes, renderTerco, renderMissa, textoOracaoParaOuvir } from './views/oracoes.js';
+import { registrar, iniciarEstatisticas } from './analyticsService.js';
 import { hojeISO, ehDataISO, somarDias, formatarExtenso, formatarCurto } from './utils/date.js';
 
 const el = (id) => document.getElementById(id);
@@ -40,6 +41,7 @@ function dataDoHash() {
 
 function irPara(data) {
   if (data === dataAtual) return;
+  registrar(data === hojeISO() ? 'data-hoje' : 'data-outro-dia', 'Mudou a data');
   location.hash = data;
 }
 
@@ -99,6 +101,7 @@ async function carregar(data) {
       if (!atual()) return;
       console.warn(e);
       el('painel-catena').innerHTML = erroHtml('Não foi possível carregar a Catena Aurea.');
+      registrar('erro-catena', 'Erro: Catena Aurea');
     });
 
   // Catecismo: parágrafos que citam o(s) Evangelho(s) do dia
@@ -115,6 +118,7 @@ async function carregar(data) {
       if (!atual()) return;
       console.warn(e);
       el('painel-catecismo').innerHTML = erroHtml('Não foi possível carregar o Catecismo.');
+      registrar('erro-catecismo', 'Erro: Catecismo');
     });
 
   // Orações da Missa: vêm na mesma resposta da liturgia
@@ -132,6 +136,7 @@ async function carregar(data) {
       if (!atual()) return;
       console.warn(e, e.tentativas);
       el('painel-reflexao').innerHTML = erroHtml('Não foi possível carregar a reflexão do dia.');
+      registrar('erro-reflexao', 'Erro: Reflexão');
     });
 
   liturgiaP
@@ -139,12 +144,14 @@ async function carregar(data) {
       if (!atual()) return;
       renderCabecalho(res.dados);
       fontesDia.liturgia = res.fonte;
+      if (res.fonte !== 'liturgia-api' && !res.doCache) registrar('fonte-reserva-liturgia', 'Liturgia veio da fonte reserva');
       el('painel-liturgia').innerHTML = renderLiturgia(res, data);
     })
     .catch((e) => {
       if (!atual()) return;
       console.warn(e, e.tentativas);
       el('titulo-liturgico').textContent = 'Liturgia indisponível';
+      registrar('erro-liturgia', 'Erro: Liturgia');
       el('painel-liturgia').innerHTML = erroHtml(
         'Não foi possível carregar a liturgia deste dia.',
         'Verifique sua conexão. As fontes consultadas não responderam.',
@@ -161,6 +168,7 @@ async function carregar(data) {
     .catch((e) => {
       if (!atual()) return;
       console.warn(e, e.tentativas);
+      registrar('erro-santo', 'Erro: Santo do dia');
       el('painel-santo').innerHTML = `
         <figure class="overflow-hidden rounded-lg bg-superficie">
           <img src="${IMAGEM_PADRAO}" alt="Pintura clássica de santos (Fra Angelico)" class="mx-auto max-h-[28rem] w-auto object-contain">
@@ -198,6 +206,7 @@ function iniciarEventos() {
     const btnSalvar = e.target.closest('[data-acao="salvar"]');
     if (btnSalvar) {
       const salvo = alternarSalvo(JSON.parse(btnSalvar.dataset.salvar));
+      if (salvo) registrar('salvar', 'Salvou uma leitura');
       btnSalvar.setAttribute('aria-pressed', String(salvo));
       const rotulo = salvo ? 'Remover dos salvos' : 'Salvar leitura';
       btnSalvar.setAttribute('aria-label', rotulo);
@@ -216,6 +225,10 @@ function iniciarEventos() {
     const btnOuvir = e.target.closest('[data-acao="ouvir"]');
     if (btnOuvir) {
       const id = btnOuvir.dataset.alvo;
+      if (!['tocando', 'pausado'].includes(btnOuvir.dataset.estado)) {
+        const oracao = id.startsWith('oracao-');
+        registrar(oracao ? 'ouvir-oracao' : 'ouvir-liturgia', oracao ? 'Ouviu uma oração' : 'Ouviu uma leitura');
+      }
       alternarAudio(id, textoParaOuvir(id) || textoOracaoParaOuvir(id), (estado) => {
         btnOuvir.dataset.estado = estado;
         btnOuvir.setAttribute('aria-pressed', String(estado === 'tocando'));
@@ -238,7 +251,11 @@ function iniciarEventos() {
 
     // Terço: trocar o conjunto de mistérios
     const btnTerco = e.target.closest('[data-terco]');
-    if (btnTerco) { tercoEscolhido = btnTerco.dataset.terco; renderTercoAtual(); }
+    if (btnTerco) {
+      tercoEscolhido = btnTerco.dataset.terco;
+      registrar(`terco-${tercoEscolhido}`, `Terço: mistérios ${tercoEscolhido}`);
+      renderTercoAtual();
+    }
 
     // Abrir uma oração (do roteiro do Terço ou dos Salvos)
     const irOracao = e.target.closest('[data-ir-oracao]');
@@ -246,6 +263,8 @@ function iniciarEventos() {
   });
 
   document.addEventListener('salvos-alterados', renderPainelSalvos);
+
+  iniciarEventosEstatisticas();
 
   // Imagens com reservas: tenta a próxima URL quando uma falha
   document.addEventListener('error', (e) => {
@@ -257,6 +276,27 @@ function iniciarEventos() {
   }, true);
 
   window.addEventListener('hashchange', aoMudarHash);
+}
+
+/** Estatísticas: abas, menu ⋮, painéis e orações abertas (só ações do leitor). */
+function iniciarEventosEstatisticas() {
+  for (const aba of document.querySelectorAll('[role="tab"]')) {
+    aba.addEventListener('click', () => registrar(`aba-${aba.dataset.aba}`, `Aba: ${aba.textContent.trim()}`));
+  }
+  const ao = (id, fn) => el(id).addEventListener('click', fn);
+  ao('btn-salvos', () => registrar('abrir-salvos', 'Abriu Salvos'));
+  ao('btn-fontes', () => registrar('abrir-fontes', 'Abriu Fontes e créditos'));
+  ao('btn-foco', () => registrar('modo-foco', 'Modo foco'));
+  ao('btn-fonte-mais', () => registrar('fonte-maior', 'Aumentou o texto'));
+  ao('btn-fonte-menos', () => registrar('fonte-menor', 'Diminuiu o texto'));
+  // Os listeners de uiService rodam antes: o tema já é o novo
+  ao('btn-tema', () => registrar(`tema-${document.documentElement.dataset.theme}`, 'Trocou o tema'));
+
+  // Oração expandida (o evento "toggle" não sobe; por isso a captura)
+  document.addEventListener('toggle', (e) => {
+    const det = e.target;
+    if (det instanceof HTMLDetailsElement && det.open && det.id.startsWith('oracao-')) registrar(det.id, `Oração: ${det.id.slice(7)}`);
+  }, true);
 }
 
 function renderPainelSalvos() {
@@ -302,10 +342,12 @@ function abrirOracao(id) {
 // Atalhos do ícone instalado (manifest "shortcuts"): ?aba=santo, ?aba=salvos...
 function abrirAbaDaUrl() {
   const aba = new URLSearchParams(location.search).get('aba');
+  if (aba) registrar(`atalho-${aba}`, `Atalho do ícone: ${aba}`);
   if (aba === 'salvos') folhaSalvos.abrir();
   else if (aba) selecionarAba(aba);
 }
 
+iniciarEstatisticas();
 iniciarControles();
 iniciarFolha('fontes', () => renderFontes(fontesDia));
 folhaSalvos = iniciarFolha('salvos', () => renderSalvos(listarSalvos()));

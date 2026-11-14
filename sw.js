@@ -6,6 +6,7 @@
 // - Tailwind e Google Fonts: cache e atualização em segundo plano.
 // - Imagens (santos): cache primeiro, até 80 imagens.
 // - APIs (liturgia, Evangelizo, Wikipedia): não interceptadas; o app já guarda as respostas no localStorage.
+// - GoatCounter (estatísticas): nunca interceptado nem guardado, senão as visitas seriam contadas uma vez só.
 
 importScripts('versao.js');
 const VERSAO = self.APP_VERSAO;
@@ -20,6 +21,7 @@ const ARQUIVOS_APP = [
   'css/styles.css',
   'js/app.js',
   'js/apiService.js',
+  'js/analyticsService.js',
   'js/audioService.js',
   'js/catenaService.js',
   'js/catecismoService.js',
@@ -81,6 +83,7 @@ self.addEventListener('fetch', (e) => {
   const req = e.request;
   if (req.method !== 'GET') return;
   const url = new URL(req.url);
+  if (url.hostname === 'gc.zgo.at' || url.hostname.endsWith('.goatcounter.com')) return;
 
   if (url.origin === location.origin) {
     if (url.pathname.includes('/data/catena/')) e.respondWith(cachePrimeiro(req, CACHE_DADOS));
