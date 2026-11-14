@@ -4,6 +4,8 @@
 // - Desligado: mostra um aviso com o botão "Atualizar".
 // - Procura novas versões ao abrir o app e sempre que ele volta a ficar visível.
 
+import { registrar } from './analyticsService.js';
+
 const CHAVE_AUTO = 'pref:atualizar-sozinho';
 const el = (id) => document.getElementById(id);
 
@@ -52,6 +54,7 @@ export function iniciarAtualizacoes() {
   el('btn-auto-atualizar').addEventListener('click', () => {
     const ligar = !autoLigado();
     definirAuto(ligar);
+    registrar(ligar ? 'atualizar-sozinho-ligado' : 'atualizar-sozinho-desligado', 'Atualizar sozinho');
     if (ligar && reg?.waiting) ativar(reg.waiting);
   });
   el('btn-atualizar-agora').addEventListener('click', () => { if (reg?.waiting) ativar(reg.waiting); });
